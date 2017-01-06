@@ -50,6 +50,7 @@ class Blowfish {
         return {
             STRING: 'STRING',
             ARRAY_BUFFER: 'ARRAY_BUFFER',
+            UINT8_ARRAY: 'UINT8_ARRAY'
         };
     }
 
@@ -135,6 +136,9 @@ class Blowfish {
         }
 
         switch (this.returnType) {
+            case Blowfish.TYPE.UINT8_ARRAY: {
+                return data;
+            }
             case Blowfish.TYPE.ARRAY_BUFFER: {
                 return data.buffer;
             }
@@ -174,6 +178,9 @@ class Blowfish {
         data = this._unpad(data);
 
         switch (this.returnType) {
+            case Blowfish.TYPE.UINT8_ARRAY: {
+                return data;
+            }
             case Blowfish.TYPE.ARRAY_BUFFER: {
                 return data.buffer;
             }
