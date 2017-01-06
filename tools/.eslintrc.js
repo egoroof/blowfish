@@ -10,6 +10,7 @@ module.exports = {
         "mocha": true
     },
     "globals": {
+        Blowfish: false,
         expect: false
     },
     "extends": "eslint:recommended",
