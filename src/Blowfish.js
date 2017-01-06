@@ -57,7 +57,7 @@ class Blowfish {
     constructor(key, mode = Blowfish.MODE.ECB, padding = Blowfish.PADDING.PKCS5) {
         const isString = typeof key === 'string';
         const isBuffer = typeof key === 'object' && 'byteLength' in key;
-        if (!isString || !isBuffer) {
+        if (!isString && !isBuffer) {
             throw new Error('Key should be a string or an ArrayBuffer');
         }
         if (Object.keys(Blowfish.MODE).indexOf(mode) < 0) {
@@ -89,7 +89,7 @@ class Blowfish {
     setIv(iv) {
         const isString = typeof iv === 'string';
         const isBuffer = typeof iv === 'object' && 'byteLength' in iv;
-        if (!isString || !isBuffer) {
+        if (!isString && !isBuffer) {
             throw new Error('IV should be a string or an ArrayBuffer');
         }
         if (isString) {
@@ -113,7 +113,7 @@ class Blowfish {
     encode(data) {
         const isString = typeof data === 'string';
         const isBuffer = typeof data === 'object' && 'byteLength' in data;
-        if (!isString || !isBuffer) {
+        if (!isString && !isBuffer) {
             throw new Error('Encode parameter should be a string or an ArrayBuffer');
         }
         if (isString) {
@@ -151,7 +151,7 @@ class Blowfish {
     decode(data) {
         const isString = typeof data === 'string';
         const isBuffer = typeof data === 'object' && 'byteLength' in data;
-        if (!isString || !isBuffer) {
+        if (!isString && !isBuffer) {
             throw new Error('Decode parameter should be a string or an ArrayBuffer');
         }
         if (isString) {
@@ -191,7 +191,7 @@ class Blowfish {
     }
 
     _pad(bytes) {
-        const count = bytes.length % 8;
+        const count = 8 - bytes.length % 8;
         if (count === 0) { // todo LAST_BYTE can omit it?
             return bytes;
         }
@@ -343,9 +343,8 @@ class Blowfish {
     }
 
     _encodeECB(bytes) {
-        const partsCount = bytes.length / 8;
         const encoded = new Uint8Array(bytes.length);
-        for (let i = 0; i < partsCount; i += 8) {
+        for (let i = 0; i < bytes.length; i += 8) {
             let l = fourBytesToNumber(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
             let r = fourBytesToNumber(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
             [l, r] = this._encryptBlock(l, r);
@@ -356,11 +355,10 @@ class Blowfish {
     }
 
     _encodeCBC(bytes) {
-        const partsCount = bytes.length / 8;
         const encoded = new Uint8Array(bytes.length);
         let prevL = fourBytesToNumber(this.iv[0], this.iv[1], this.iv[2], this.iv[3]);
         let prevR = fourBytesToNumber(this.iv[4], this.iv[5], this.iv[6], this.iv[7]);
-        for (let i = 0; i < partsCount; i += 8) {
+        for (let i = 0; i < bytes.length; i += 8) {
             let l = fourBytesToNumber(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
             let r = fourBytesToNumber(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
             [l, r] = [xor(prevL, l), xor(prevR, r)];
@@ -373,9 +371,8 @@ class Blowfish {
     }
 
     _decodeECB(bytes) {
-        const partsCount = bytes.length / 8;
         const decoded = new Uint8Array(bytes.length);
-        for (let i = 0; i < partsCount; i += 8) {
+        for (let i = 0; i < bytes.length; i += 8) {
             let l = fourBytesToNumber(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
             let r = fourBytesToNumber(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
             [l, r] = this._decryptBlock(l, r);
@@ -386,13 +383,12 @@ class Blowfish {
     }
 
     _decodeCBC(bytes) {
-        const partsCount = bytes.length / 8;
         const decoded = new Uint8Array(bytes.length);
         let prevL = fourBytesToNumber(this.iv[0], this.iv[1], this.iv[2], this.iv[3]);
         let prevR = fourBytesToNumber(this.iv[4], this.iv[5], this.iv[6], this.iv[7]);
         let prevLTmp;
         let prevRTmp;
-        for (let i = 0; i < partsCount; i += 8) {
+        for (let i = 0; i < bytes.length; i += 8) {
             let l = fourBytesToNumber(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
             let r = fourBytesToNumber(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
             [prevLTmp, prevRTmp] = [l, r];
