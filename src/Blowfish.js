@@ -9,6 +9,10 @@ function xor(a, b) {
     return signedToUnsigned(a ^ b);
 }
 
+function sumMod32(a, b) {
+    return signedToUnsigned((a + b) | 0);
+}
+
 function fourBytesToNumber(byte1, byte2, byte3, byte4) {
     return signedToUnsigned(byte1 << 24 | byte2 << 16 | byte3 << 8 | byte4);
 }
@@ -76,12 +80,12 @@ class Blowfish {
         this.padding = padding;
         this.returnType = Blowfish.TYPE.STRING;
         this.iv = new Uint8Array(0); // todo generate it?
-        this.p = data.P;
+        this.p = data.P.slice();
         this.s = [];
-        this.s.push(data.S0);
-        this.s.push(data.S1);
-        this.s.push(data.S2);
-        this.s.push(data.S3);
+        this.s.push(data.S0.slice());
+        this.s.push(data.S1.slice());
+        this.s.push(data.S2.slice());
+        this.s.push(data.S3.slice());
         this._generateSubkeys();
     }
 
@@ -185,7 +189,7 @@ class Blowfish {
 
     _pad(bytes) {
         const count = 8 - bytes.length % 8;
-        if (count === 0) { // todo LAST_BYTE can omit it?
+        if (count === 8) { // todo LAST_BYTE can omit it?
             return bytes;
         }
         const writer = new Uint8Array(bytes.length + count);
@@ -275,14 +279,24 @@ class Blowfish {
         return bytes.subarray(0, bytes.length - cutLength);
     }
 
-    _generateSubkeys() {
-        // todo check this code
-        for (let i = 0, k = 0; i < 18; i++) {
-            let longKey = 0;
-            for (let j = 0; j < 4; j++, k++) {
-                longKey = signedToUnsigned((longKey << 8) | this.key[k % this.key.length]);
+    _generateLongKey() {
+        if (this.key.length >= 72) { // 576 bits -> 72 bytes
+            return this.key;
+        }
+        const longKey = [];
+        while (longKey.length < 72) {
+            for (let i = 0; i < this.key.length; i++) {
+                longKey.push(this.key[i]);
             }
-            this.p[i] = xor(this.p[i], longKey);
+        }
+        return new Uint8Array(longKey);
+    }
+
+    _generateSubkeys() {
+        const longKey = this._generateLongKey();
+        for (let i = 0, j = 0; i < 18; i++, j += 4) {
+            const num = fourBytesToNumber(longKey[j], longKey[j + 1], longKey[j + 2], longKey[j + 3]);
+            this.p[i] = xor(this.p[i], num);
         }
         let l = 0;
         let r = 0;
@@ -313,26 +327,26 @@ class Blowfish {
     }
 
     _decryptBlock(l, r) {
-        // todo check this code carefully
         for (let i = 17; i > 1; i--) {
             l = xor(l, this.p[i]);
             r = xor(r, this._f(l));
             [l, r] = [r, l];
         }
         [l, r] = [r, l];
-        r = xor(r, this.p[1]); // todo should these xor's go first?
+        r = xor(r, this.p[1]);
         l = xor(l, this.p[0]);
         return [l, r];
     }
 
     _f(x) {
-        // todo test this code - operations are signed
-        const a = this.s[0][(x >>> 24) & 0xFF];
-        const b = this.s[1][(x >>> 16) & 0xFF];
-        const c = this.s[2][(x >>> 8) & 0xFF];
-        const d = this.s[3][(x) & 0xFF];
+        const a = (x >>> 24) & 0xFF;
+        const b = (x >>> 16) & 0xFF;
+        const c = (x >>> 8) & 0xFF;
+        const d = x & 0xFF;
 
-        return xor(a + b, c) + d;
+        let res = sumMod32(this.s[0][a], this.s[1][b]);
+        res = xor(res, this.s[2][c]);
+        return sumMod32(res, this.s[3][d]);
     }
 
     _encodeECB(bytes) {
