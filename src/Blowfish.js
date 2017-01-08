@@ -230,8 +230,8 @@ class Blowfish {
     _unpad(bytes) {
         let cutLength = 0;
         switch (this.padding) {
+            case Blowfish.PADDING.LAST_BYTE:
             case Blowfish.PADDING.PKCS5: {
-                // todo check all chars
                 const lastChar = bytes[bytes.length - 1];
                 if (lastChar < 8) {
                     cutLength = lastChar;
@@ -250,14 +250,6 @@ class Blowfish {
                         break;
                     }
                     i++;
-                }
-                break;
-            }
-            case Blowfish.PADDING.LAST_BYTE: {
-                // todo check all chars
-                const lastChar = bytes[bytes.length - 1];
-                if (lastChar < 8) { // todo make it < 9 if it is added even when bytes % 8 === 0
-                    cutLength = lastChar;
                 }
                 break;
             }
