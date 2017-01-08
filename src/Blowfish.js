@@ -26,12 +26,8 @@ function numberToFourBytes(number) {
     ];
 }
 
-// https://en.wikipedia.org/wiki/Blowfish_(cipher)
-// https://habrahabr.ru/post/140394/ [RUS]
-// http://blowfish.online-domain-tools.com/ for tests
 class Blowfish {
 
-    // https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation
     static get MODE() {
         return {
             ECB: 'ECB',
@@ -39,7 +35,6 @@ class Blowfish {
         };
     }
 
-    // http://www.di-mgt.com.au/cryptopad.html
     static get PADDING() {
         return {
             PKCS5: 'PKCS5',
@@ -61,7 +56,7 @@ class Blowfish {
         const isString = typeof key === 'string';
         const isBuffer = typeof key === 'object' && 'byteLength' in key;
         if (!isString && !isBuffer) {
-            throw new Error('Key should be a string or an ArrayBuffer');
+            throw new Error('Key should be a string or an ArrayBuffer / Buffer');
         }
         if (Object.keys(Blowfish.MODE).indexOf(mode) < 0) {
             throw new Error(`Unsupported mode "${mode}"`);
@@ -93,7 +88,7 @@ class Blowfish {
         const isString = typeof iv === 'string';
         const isBuffer = typeof iv === 'object' && 'byteLength' in iv;
         if (!isString && !isBuffer) {
-            throw new Error('IV should be a string or an ArrayBuffer');
+            throw new Error('IV should be a string or an ArrayBuffer / Buffer');
         }
         if (isString) {
             iv = (new TextEncoder()).encode(iv);
@@ -117,7 +112,7 @@ class Blowfish {
         const isString = typeof data === 'string';
         const isBuffer = typeof data === 'object' && 'byteLength' in data;
         if (!isString && !isBuffer) {
-            throw new Error('Encode parameter should be a string or an ArrayBuffer');
+            throw new Error('Encode parameter should be a string or an ArrayBuffer / Buffer');
         }
         if (this.mode !== Blowfish.MODE.ECB && this.iv.length === 0) {
             throw new Error('IV is not set');
@@ -155,7 +150,7 @@ class Blowfish {
         const isString = typeof data === 'string';
         const isBuffer = typeof data === 'object' && 'byteLength' in data;
         if (!isString && !isBuffer) {
-            throw new Error('Decode parameter should be a string or an ArrayBuffer');
+            throw new Error('Decode parameter should be a string or an ArrayBuffer / Buffer');
         }
         if (this.mode !== Blowfish.MODE.ECB && this.iv.length === 0) {
             throw new Error('IV is not set');
