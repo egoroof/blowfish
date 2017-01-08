@@ -79,7 +79,7 @@ class Blowfish {
         this.mode = mode;
         this.padding = padding;
         this.returnType = Blowfish.TYPE.STRING;
-        this.iv = new Uint8Array(0); // todo generate it?
+        this.iv = new Uint8Array(0);
         this.p = data.P.slice();
         this.s = [];
         this.s.push(data.S0.slice());
@@ -119,6 +119,9 @@ class Blowfish {
         if (!isString && !isBuffer) {
             throw new Error('Encode parameter should be a string or an ArrayBuffer');
         }
+        if (this.mode !== Blowfish.MODE.ECB && this.iv.length === 0) {
+            throw new Error('IV is not set');
+        }
         if (isString) {
             data = (new TextEncoder()).encode(data);
         } else if (isBuffer) {
@@ -153,6 +156,9 @@ class Blowfish {
         const isBuffer = typeof data === 'object' && 'byteLength' in data;
         if (!isString && !isBuffer) {
             throw new Error('Decode parameter should be a string or an ArrayBuffer');
+        }
+        if (this.mode !== Blowfish.MODE.ECB && this.iv.length === 0) {
+            throw new Error('IV is not set');
         }
         if (isString) {
             data = (new TextEncoder()).encode(data);
@@ -189,7 +195,7 @@ class Blowfish {
 
     _pad(bytes) {
         const count = 8 - bytes.length % 8;
-        if (count === 8) { // todo LAST_BYTE can omit it?
+        if (count === 8) {
             return bytes;
         }
         const writer = new Uint8Array(bytes.length + count);
