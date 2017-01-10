@@ -64,9 +64,11 @@ Strings supports all unicode including emoji ✨.
 ```js
 const bf = new Blowfish('super key', Blowfish.MODE.ECB, Blowfish.PADDING.NULL); // only key isn't optional
 bf.setIv('abcdefgh'); // optional for ECB mode; bytes length should be equal 8
-bf.setReturnType(Blowfish.TYPE.STRING); // optional
 
+bf.setReturnType(Blowfish.TYPE.UINT8_ARRAY); // optional
 const encoded = bf.encode('input text even with emoji 🎅');
+
+bf.setReturnType(Blowfish.TYPE.STRING); // optional
 const decoded = bf.decode(encoded);
 ```
 
