@@ -72,6 +72,8 @@ bf.setReturnType(Blowfish.TYPE.STRING); // optional
 const decoded = bf.decode(encoded);
 ```
 
+You can play with this example in runkit: https://runkit.com/egoroof/blowfish-example
+
 ### Block cipher mode of operation
 
 https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation
