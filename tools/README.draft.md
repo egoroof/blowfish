@@ -12,8 +12,6 @@
 
 - [Requirements](#requirements)
 - [Installation](#installation)
-  - [Browser](#browser)
-  - [Node.js](#nodejs)
 - [Usage](#usage)
   - [Example](#example)
   - [Block cipher mode of operation](#block-cipher-mode-of-operation)
@@ -32,27 +30,13 @@ Node.js 4 - 7 are tested and works well.
 This library is wrapped with [Universal Module Definition](https://github.com/umdjs/umd). This means you will not
 have any problems to use it with different script loaders.
 
-### Browser
-
-You can include library via [unpkg](https://unpkg.com/) or save it to local machine:
+For browsers you can include library via [unpkg](https://unpkg.com/) CDN or save it to local machine:
 
 ```html
 <script src="https://unpkg.com/egoroof-blowfish@###version###" crossorigin="anonymous" integrity="###hash###"></script>
 ```
 
-If you are using browser module loaders like `webpack` or `browserify` install it via [npm](https://www.npmjs.com/):
-
-```
-npm install egoroof-blowfish --save
-```
-
-Then you will be able to use it:
-
-```js
-const Blowfish = require('egoroof-blowfish');
-```
-
-### Node.js
+For Node.js and browser module loaders like `webpack`, `browserify`, etc. install it via [npm](https://www.npmjs.com/):
 
 ```
 npm install egoroof-blowfish --save
