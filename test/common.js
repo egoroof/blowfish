@@ -2,19 +2,19 @@ const tests = [{
     describe: 'default parameters',
     it: [{
         describe: 'should set ECB mode',
-        test: (Blowfish, expect) => {
+        test: function(Blowfish, expect) {
             const bf = new Blowfish('a');
             expect(bf.mode).to.equal(Blowfish.MODE.ECB);
         }
     }, {
         describe: 'should set PKCS5 padding',
-        test: (Blowfish, expect) => {
+        test: function(Blowfish, expect) {
             const bf = new Blowfish('a');
             expect(bf.padding).to.equal(Blowfish.PADDING.PKCS5);
         }
     }, {
         describe: 'should set STRING return type',
-        test: (Blowfish, expect) => {
+        test: function(Blowfish, expect) {
             const bf = new Blowfish('a');
             expect(bf.returnType).to.equal(Blowfish.TYPE.STRING);
         }
@@ -23,7 +23,7 @@ const tests = [{
     describe: 'mode ECB, padding NULL',
     it: [{
         describe: 'should correctly encode / decode english text',
-        test: (Blowfish, expect) => {
+        test: function(Blowfish, expect) {
             const key = 'super key';
             const text = 'Encoded string';
             const textEncoded = new Uint8Array([
@@ -40,7 +40,7 @@ const tests = [{
         }
     }, {
         describe: 'should correctly encode / decode russian text',
-        test: (Blowfish, expect) => {
+        test: function(Blowfish, expect) {
             const key = 'super key';
             const text = 'Строка на русском';
             const textEncoded = new Uint8Array([
@@ -58,7 +58,7 @@ const tests = [{
         }
     }, {
         describe: 'should correctly encode / decode emoji text',
-        test: (Blowfish, expect) => {
+        test: function(Blowfish, expect) {
             const key = 'super key';
             const text = '🎅🎅🎅🎅🎅';
             const textEncoded = new Uint8Array([
@@ -79,7 +79,7 @@ const tests = [{
     describe: 'mode CBC, padding NULL',
     it: [{
         describe: 'should correctly encode / decode english text',
-        test: (Blowfish, expect) => {
+        test: function(Blowfish, expect) {
             const key = 'super key';
             const text = 'Encoded string';
             const textEncoded = new Uint8Array([
@@ -97,7 +97,7 @@ const tests = [{
         }
     }, {
         describe: 'should correctly encode / decode russian text',
-        test: (Blowfish, expect) => {
+        test: function(Blowfish, expect) {
             const key = 'super key';
             const text = 'Строка на русском';
             const textEncoded = new Uint8Array([
@@ -116,7 +116,7 @@ const tests = [{
         }
     }, {
         describe: 'should correctly encode / decode emoji text',
-        test: (Blowfish, expect) => {
+        test: function(Blowfish, expect) {
             const key = 'super key';
             const text = '🎅🎅🎅🎅🎅';
             const textEncoded = new Uint8Array([
@@ -136,4 +136,8 @@ const tests = [{
     }]
 }];
 
-module.exports = tests;
+if (typeof exports === 'object' && typeof module === 'object') {
+    module.exports = tests;
+} else {
+    this['tests'] = tests;
+}

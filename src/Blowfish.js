@@ -1,5 +1,7 @@
-import * as data from './data';
-import {TextEncoder, TextDecoder} from '../lib/encoding'; // https://github.com/inexorabletash/text-encoding/issues/44
+const data = require('./data');
+const TextEncoder = require('../lib/encoding').TextEncoder;
+const TextDecoder = require('../lib/encoding').TextDecoder;
+// https://github.com/inexorabletash/text-encoding/issues/44
 
 function signedToUnsigned(signed) {
     return signed >>> 0;

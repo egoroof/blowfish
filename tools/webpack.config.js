@@ -1,5 +1,3 @@
-const babelConfig = require('./.babelrc.json');
-
 module.exports = {
     entry: './src/Blowfish.js',
     output: {
@@ -13,7 +11,11 @@ module.exports = {
             test: /\.js$/,
             exclude: /node_modules/,
             loader: 'babel-loader',
-            query: babelConfig
+            query: {
+                presets: [['env', {
+                    modules: false
+                }]]
+            }
         }]
     }
 };
