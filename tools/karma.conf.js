@@ -1,3 +1,18 @@
+const browsers = ['Firefox'];
+
+if (!process.env.CI) {
+    browsers.push('Chrome');
+    switch (process.platform) {
+        case 'darwin':
+            browsers.push('Safari');
+            break;
+        case 'win32':
+            browsers.push('IE');
+            browsers.push('Edge');
+            break;
+    }
+}
+
 module.exports = (config) => {
     config.set({
         basePath: '../',
@@ -8,7 +23,7 @@ module.exports = (config) => {
             'test/browser.js'
         ],
         reporters: ['dots'],
-        browsers: process.env.CI ? ['Firefox'] : ['Chrome', 'Firefox', 'IE', 'Edge'],
+        browsers: browsers,
         singleRun: true
     });
 };
