@@ -1,7 +1,18 @@
 const crypto = require('crypto');
-const tests = require('./common');
 const expect = require('chai').expect;
-const Blowfish = require('../dist/blowfish');
+const tests = require('./common');
+const mode = process.argv[3]; // test, coverage
+
+let Blowfish;
+
+switch (mode) {
+    case 'coverage':
+        Blowfish = require('../src/Blowfish');
+        break;
+    default:
+        Blowfish = require('../dist/blowfish');
+        break;
+}
 
 tests.forEach((testPack) => {
     describe(testPack.describe, () => {
