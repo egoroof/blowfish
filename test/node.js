@@ -1,3 +1,5 @@
+'use strict'; // node 4 and 5 legacy
+
 const crypto = require('crypto');
 const expect = require('chai').expect;
 const tests = require('./common');
