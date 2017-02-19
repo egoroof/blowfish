@@ -75,7 +75,6 @@ class Blowfish {
         this.key = key;
         this.mode = mode;
         this.padding = padding;
-        this.returnType = Blowfish.TYPE.STRING;
         this.iv = new Uint8Array(0);
         this.p = data.P.slice();
         this.s = [];
@@ -103,14 +102,7 @@ class Blowfish {
         this.iv = iv;
     }
 
-    setReturnType(type) {
-        if (Object.keys(Blowfish.TYPE).indexOf(type) < 0) {
-            throw new Error(`Unsupported return type "${type}"`);
-        }
-        this.returnType = type;
-    }
-
-    encode(data) {
+    encode(data, returnType = Blowfish.TYPE.UINT8_ARRAY) {
         const isString = typeof data === 'string';
         const isBuffer = typeof data === 'object' && 'byteLength' in data;
         if (!isString && !isBuffer) {
@@ -138,17 +130,20 @@ class Blowfish {
             }
         }
 
-        switch (this.returnType) {
+        switch (returnType) {
             case Blowfish.TYPE.UINT8_ARRAY: {
                 return data;
             }
             case Blowfish.TYPE.STRING: {
                 return (new TextDecoder()).decode(data);
             }
+            default: {
+                throw new Error(`Unsupported return type "${returnType}"`);
+            }
         }
     }
 
-    decode(data) {
+    decode(data, returnType = Blowfish.TYPE.STRING) {
         const isString = typeof data === 'string';
         const isBuffer = typeof data === 'object' && 'byteLength' in data;
         if (!isString && !isBuffer) {
@@ -180,12 +175,15 @@ class Blowfish {
 
         data = this._unpad(data);
 
-        switch (this.returnType) {
+        switch (returnType) {
             case Blowfish.TYPE.UINT8_ARRAY: {
                 return data;
             }
             case Blowfish.TYPE.STRING: {
                 return (new TextDecoder()).decode(data);
+            }
+            default: {
+                throw new Error(`Unsupported return type "${returnType}"`);
             }
         }
     }

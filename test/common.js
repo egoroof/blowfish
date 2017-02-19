@@ -12,12 +12,6 @@ const tests = [{
             const bf = new Blowfish('a');
             expect(bf.padding).to.equal(Blowfish.PADDING.PKCS5);
         }
-    }, {
-        describe: 'should set STRING return type',
-        test: function(Blowfish, expect) {
-            const bf = new Blowfish('a');
-            expect(bf.returnType).to.equal(Blowfish.TYPE.STRING);
-        }
     }]
 }, {
     describe: 'mode ECB, padding NULL',
@@ -34,7 +28,6 @@ const tests = [{
             const decoded = bf.decode(textEncoded);
             expect(decoded).to.eql(text);
 
-            bf.setReturnType(Blowfish.TYPE.UINT8_ARRAY);
             const encoded = bf.encode(text);
             expect(encoded).to.eql(textEncoded);
         }
@@ -52,7 +45,6 @@ const tests = [{
             const decoded = bf.decode(textEncoded);
             expect(decoded).to.eql(text);
 
-            bf.setReturnType(Blowfish.TYPE.UINT8_ARRAY);
             const encoded = bf.encode(text);
             expect(encoded).to.eql(textEncoded);
         }
@@ -70,7 +62,6 @@ const tests = [{
             const decoded = bf.decode(textEncoded);
             expect(decoded).to.eql(text);
 
-            bf.setReturnType(Blowfish.TYPE.UINT8_ARRAY);
             const encoded = bf.encode(text);
             expect(encoded).to.eql(textEncoded);
         }
@@ -91,7 +82,6 @@ const tests = [{
             const decoded = bf.decode(textEncoded);
             expect(decoded).to.eql(text);
 
-            bf.setReturnType(Blowfish.TYPE.UINT8_ARRAY);
             const encoded = bf.encode(text);
             expect(encoded).to.eql(textEncoded);
         }
@@ -110,7 +100,6 @@ const tests = [{
             const decoded = bf.decode(textEncoded);
             expect(decoded).to.eql(text);
 
-            bf.setReturnType(Blowfish.TYPE.UINT8_ARRAY);
             const encoded = bf.encode(text);
             expect(encoded).to.eql(textEncoded);
         }
@@ -129,7 +118,6 @@ const tests = [{
             const decoded = bf.decode(textEncoded);
             expect(decoded).to.eql(text);
 
-            bf.setReturnType(Blowfish.TYPE.UINT8_ARRAY);
             const encoded = bf.encode(text);
             expect(encoded).to.eql(textEncoded);
         }

@@ -59,7 +59,7 @@ const Blowfish = require('egoroof-blowfish');
 
 ## Usage
 
-All input data including key, iv, plaintext and ciphertext should be a string or ArrayBuffer / Buffer.
+All input data including key, IV, plaintext and ciphertext should be a `String` or `ArrayBuffer` / `Buffer`.
 Strings supports all unicode including emoji ✨.
 
 ### Example
@@ -68,11 +68,8 @@ Strings supports all unicode including emoji ✨.
 const bf = new Blowfish('super key', Blowfish.MODE.ECB, Blowfish.PADDING.NULL); // only key isn't optional
 bf.setIv('abcdefgh'); // optional for ECB mode; bytes length should be equal 8
 
-bf.setReturnType(Blowfish.TYPE.UINT8_ARRAY); // optional
-const encoded = bf.encode('input text even with emoji 🎅');
-
-bf.setReturnType(Blowfish.TYPE.STRING); // optional
-const decoded = bf.decode(encoded);
+const encoded = bf.encode('input text even with emoji 🎅', Blowfish.TYPE.UINT8_ARRAY); // type is optional
+const decoded = bf.decode(encoded, Blowfish.TYPE.STRING); // type is optional
 ```
 
 You can play with this example in runkit: https://runkit.com/egoroof/blowfish-example
@@ -103,6 +100,6 @@ Blowfish.PADDING.SPACES // Pad with spaces
 Which type of data should return functions `encode` and `decode`:
 
 ```js
-Blowfish.TYPE.STRING // (default) String
-Blowfish.TYPE.UINT8_ARRAY // Uint8Array
+Blowfish.TYPE.STRING // (default for decode) String
+Blowfish.TYPE.UINT8_ARRAY // (default for encode) Uint8Array
 ```
