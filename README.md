@@ -36,7 +36,7 @@ have any problems to use it with different script loaders.
 For browsers you can include library via [unpkg](https://unpkg.com/) CDN or save it to local machine:
 
 ```html
-<script src="https://unpkg.com/egoroof-blowfish@0.1.0" crossorigin="anonymous" integrity="sha384-uW+0CqLRlY3WkH8I/g0tgGY1Qte0s4945VbpgliDiVSS6A5VNp+WtFAt7tg5iMOr"></script>
+<script src="https://unpkg.com/egoroof-blowfish@1.0.0" crossorigin="anonymous" integrity="sha384-5C59HbrFfjzcgi9y6wlIx0R/X3jHpnoz6QHIW5yVEVyPd9Exr/905tNOZxwBnXqq"></script>
 ```
 
 For Node.js and browser module loaders like `webpack`, `browserify`, etc. install it via [npm](https://www.npmjs.com/):
