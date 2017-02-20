@@ -1,4 +1,6 @@
-# Blowfish [![npm package][npm-badge]][npm] [![Travis][build-badge]][build] [![Coveralls][coverage-badge]][coverage]
+# Blowfish
+
+[![npm package][npm-badge]][npm] [![Travis][build-badge]][build] [![Coveralls][coverage-badge]][coverage]
 
 [build-badge]: https://img.shields.io/travis/egoroof/blowfish.svg?style=flat-square
 [build]: https://travis-ci.org/egoroof/blowfish
