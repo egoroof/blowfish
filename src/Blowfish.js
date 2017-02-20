@@ -28,6 +28,27 @@ function numberToFourBytes(number) {
     ];
 }
 
+function isString(val) {
+    return typeof val === 'string';
+}
+
+function isBuffer(val) {
+    return typeof val === 'object' && 'byteLength' in val;
+}
+
+function isStringOrBuffer(val) {
+    return isString(val) || isBuffer(val);
+}
+
+function toUint8Array(val) {
+    if (isString(val)) {
+        return (new TextEncoder()).encode(val);
+    } else if (isBuffer(val)) {
+        return new Uint8Array(val);
+    }
+    throw new Error('Unsupported type');
+}
+
 class Blowfish {
 
     static get MODE() {
@@ -55,47 +76,35 @@ class Blowfish {
     }
 
     constructor(key, mode = Blowfish.MODE.ECB, padding = Blowfish.PADDING.PKCS5) {
-        const isString = typeof key === 'string';
-        const isBuffer = typeof key === 'object' && 'byteLength' in key;
-        if (!isString && !isBuffer) {
+        if (!isStringOrBuffer(key)) {
             throw new Error('Key should be a string or an ArrayBuffer / Buffer');
         }
         if (Object.keys(Blowfish.MODE).indexOf(mode) < 0) {
-            throw new Error(`Unsupported mode "${mode}"`);
+            throw new Error('Unsupported mode');
         }
         if (Object.keys(Blowfish.PADDING).indexOf(padding) < 0) {
-            throw new Error(`Unsupported padding "${padding}"`);
-        }
-        if (isString) {
-            key = (new TextEncoder()).encode(key);
-        } else if (isBuffer) {
-            key = new Uint8Array(key);
+            throw new Error('Unsupported padding');
         }
 
-        this.key = key;
+        this.key = toUint8Array(key);
         this.mode = mode;
         this.padding = padding;
         this.iv = new Uint8Array(0);
         this.p = data.P.slice();
-        this.s = [];
-        this.s.push(data.S0.slice());
-        this.s.push(data.S1.slice());
-        this.s.push(data.S2.slice());
-        this.s.push(data.S3.slice());
+        this.s = [
+            data.S0.slice(),
+            data.S1.slice(),
+            data.S2.slice(),
+            data.S3.slice()
+        ];
         this._generateSubkeys();
     }
 
     setIv(iv) {
-        const isString = typeof iv === 'string';
-        const isBuffer = typeof iv === 'object' && 'byteLength' in iv;
-        if (!isString && !isBuffer) {
+        if (!isStringOrBuffer(iv)) {
             throw new Error('IV should be a string or an ArrayBuffer / Buffer');
         }
-        if (isString) {
-            iv = (new TextEncoder()).encode(iv);
-        } else if (isBuffer) {
-            iv = new Uint8Array(iv);
-        }
+        iv = toUint8Array(iv);
         if (iv.length !== 8) {
             throw new Error('IV should be 8 byte length');
         }
@@ -103,21 +112,14 @@ class Blowfish {
     }
 
     encode(data, returnType = Blowfish.TYPE.UINT8_ARRAY) {
-        const isString = typeof data === 'string';
-        const isBuffer = typeof data === 'object' && 'byteLength' in data;
-        if (!isString && !isBuffer) {
-            throw new Error('Encode parameter should be a string or an ArrayBuffer / Buffer');
+        if (!isStringOrBuffer(data)) {
+            throw new Error('Encode data should be a string or an ArrayBuffer / Buffer');
         }
         if (this.mode !== Blowfish.MODE.ECB && this.iv.length === 0) {
             throw new Error('IV is not set');
         }
-        if (isString) {
-            data = (new TextEncoder()).encode(data);
-        } else if (isBuffer) {
-            data = new Uint8Array(data);
-        }
 
-        data = this._pad(data);
+        data = this._pad(toUint8Array(data));
 
         switch (this.mode) {
             case Blowfish.MODE.ECB: {
@@ -138,28 +140,22 @@ class Blowfish {
                 return (new TextDecoder()).decode(data);
             }
             default: {
-                throw new Error(`Unsupported return type "${returnType}"`);
+                throw new Error('Unsupported return type');
             }
         }
     }
 
     decode(data, returnType = Blowfish.TYPE.STRING) {
-        const isString = typeof data === 'string';
-        const isBuffer = typeof data === 'object' && 'byteLength' in data;
-        if (!isString && !isBuffer) {
-            throw new Error('Decode parameter should be a string or an ArrayBuffer / Buffer');
+        if (!isStringOrBuffer(data)) {
+            throw new Error('Decode data should be a string or an ArrayBuffer / Buffer');
         }
         if (this.mode !== Blowfish.MODE.ECB && this.iv.length === 0) {
             throw new Error('IV is not set');
         }
-        if (isString) {
-            data = (new TextEncoder()).encode(data);
-        } else if (isBuffer) {
-            data = new Uint8Array(data);
-        }
+        data = toUint8Array(data);
 
         if (data.length % 8 !== 0) {
-            throw new Error('Decoded string should be multiple of 8 bytes');
+            throw new Error('Decoded data should be multiple of 8 bytes');
         }
 
         switch (this.mode) {
@@ -183,7 +179,7 @@ class Blowfish {
                 return (new TextDecoder()).decode(data);
             }
             default: {
-                throw new Error(`Unsupported return type "${returnType}"`);
+                throw new Error('Unsupported return type');
             }
         }
     }
