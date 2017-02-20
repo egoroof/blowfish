@@ -15,16 +15,16 @@ function sumMod32(a, b) {
     return signedToUnsigned((a + b) | 0);
 }
 
-function fourBytesToNumber(byte1, byte2, byte3, byte4) {
+function packFourBytes(byte1, byte2, byte3, byte4) {
     return signedToUnsigned(byte1 << 24 | byte2 << 16 | byte3 << 8 | byte4);
 }
 
-function numberToFourBytes(number) {
+function unpackFourBytes(pack) {
     return [
-        (number >>> 24) & 0xFF,
-        (number >>> 16) & 0xFF,
-        (number >>> 8) & 0xFF,
-        number & 0xFF
+        (pack >>> 24) & 0xFF,
+        (pack >>> 16) & 0xFF,
+        (pack >>> 8) & 0xFF,
+        pack & 0xFF
     ];
 }
 
@@ -284,8 +284,8 @@ class Blowfish {
     _generateSubkeys() {
         const longKey = this._generateLongKey();
         for (let i = 0, j = 0; i < 18; i++, j += 4) {
-            const num = fourBytesToNumber(longKey[j], longKey[j + 1], longKey[j + 2], longKey[j + 3]);
-            this.p[i] = xor(this.p[i], num);
+            const n = packFourBytes(longKey[j], longKey[j + 1], longKey[j + 2], longKey[j + 3]);
+            this.p[i] = xor(this.p[i], n);
         }
         let l = 0;
         let r = 0;
@@ -341,27 +341,27 @@ class Blowfish {
     _encodeECB(bytes) {
         const encoded = new Uint8Array(bytes.length);
         for (let i = 0; i < bytes.length; i += 8) {
-            let l = fourBytesToNumber(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
-            let r = fourBytesToNumber(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
+            let l = packFourBytes(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
+            let r = packFourBytes(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
             [l, r] = this._encryptBlock(l, r);
-            encoded.set(numberToFourBytes(l), i);
-            encoded.set(numberToFourBytes(r), i + 4);
+            encoded.set(unpackFourBytes(l), i);
+            encoded.set(unpackFourBytes(r), i + 4);
         }
         return encoded;
     }
 
     _encodeCBC(bytes) {
         const encoded = new Uint8Array(bytes.length);
-        let prevL = fourBytesToNumber(this.iv[0], this.iv[1], this.iv[2], this.iv[3]);
-        let prevR = fourBytesToNumber(this.iv[4], this.iv[5], this.iv[6], this.iv[7]);
+        let prevL = packFourBytes(this.iv[0], this.iv[1], this.iv[2], this.iv[3]);
+        let prevR = packFourBytes(this.iv[4], this.iv[5], this.iv[6], this.iv[7]);
         for (let i = 0; i < bytes.length; i += 8) {
-            let l = fourBytesToNumber(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
-            let r = fourBytesToNumber(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
+            let l = packFourBytes(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
+            let r = packFourBytes(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
             [l, r] = [xor(prevL, l), xor(prevR, r)];
             [l, r] = this._encryptBlock(l, r);
             [prevL, prevR] = [l, r];
-            encoded.set(numberToFourBytes(l), i);
-            encoded.set(numberToFourBytes(r), i + 4);
+            encoded.set(unpackFourBytes(l), i);
+            encoded.set(unpackFourBytes(r), i + 4);
         }
         return encoded;
     }
@@ -369,30 +369,30 @@ class Blowfish {
     _decodeECB(bytes) {
         const decoded = new Uint8Array(bytes.length);
         for (let i = 0; i < bytes.length; i += 8) {
-            let l = fourBytesToNumber(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
-            let r = fourBytesToNumber(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
+            let l = packFourBytes(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
+            let r = packFourBytes(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
             [l, r] = this._decryptBlock(l, r);
-            decoded.set(numberToFourBytes(l), i);
-            decoded.set(numberToFourBytes(r), i + 4);
+            decoded.set(unpackFourBytes(l), i);
+            decoded.set(unpackFourBytes(r), i + 4);
         }
         return decoded;
     }
 
     _decodeCBC(bytes) {
         const decoded = new Uint8Array(bytes.length);
-        let prevL = fourBytesToNumber(this.iv[0], this.iv[1], this.iv[2], this.iv[3]);
-        let prevR = fourBytesToNumber(this.iv[4], this.iv[5], this.iv[6], this.iv[7]);
+        let prevL = packFourBytes(this.iv[0], this.iv[1], this.iv[2], this.iv[3]);
+        let prevR = packFourBytes(this.iv[4], this.iv[5], this.iv[6], this.iv[7]);
         let prevLTmp;
         let prevRTmp;
         for (let i = 0; i < bytes.length; i += 8) {
-            let l = fourBytesToNumber(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
-            let r = fourBytesToNumber(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
+            let l = packFourBytes(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
+            let r = packFourBytes(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
             [prevLTmp, prevRTmp] = [l, r];
             [l, r] = this._decryptBlock(l, r);
             [l, r] = [xor(prevL, l), xor(prevR, r)];
             [prevL, prevR] = [prevLTmp, prevRTmp];
-            decoded.set(numberToFourBytes(l), i);
-            decoded.set(numberToFourBytes(r), i + 4);
+            decoded.set(unpackFourBytes(l), i);
+            decoded.set(unpackFourBytes(r), i + 4);
         }
         return decoded;
     }
