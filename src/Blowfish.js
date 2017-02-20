@@ -221,23 +221,10 @@ class Blowfish {
         return bytes.subarray(0, bytes.length - cutLength);
     }
 
-    _generateLongKey() {
-        if (this.key.length >= 72) { // 576 bits -> 72 bytes
-            return this.key;
-        }
-        const longKey = [];
-        while (longKey.length < 72) {
-            for (let i = 0; i < this.key.length; i++) {
-                longKey.push(this.key[i]);
-            }
-        }
-        return new Uint8Array(longKey);
-    }
-
     _generateSubkeys() {
-        const longKey = this._generateLongKey();
+        const key = helpers.expandKey(this.key);
         for (let i = 0, j = 0; i < 18; i++, j += 4) {
-            const n = helpers.packFourBytes(longKey[j], longKey[j + 1], longKey[j + 2], longKey[j + 3]);
+            const n = helpers.packFourBytes(key[j], key[j + 1], key[j + 2], key[j + 3]);
             this.p[i] = helpers.xor(this.p[i], n);
         }
         let l = 0;

@@ -46,6 +46,19 @@ function toUint8Array(val) {
     throw new Error('Unsupported type');
 }
 
+function expandKey(key) {
+    if (key.length >= 72) { // 576 bits -> 72 bytes
+        return key;
+    }
+    const longKey = [];
+    while (longKey.length < 72) {
+        for (let i = 0; i < key.length; i++) {
+            longKey.push(key[i]);
+        }
+    }
+    return new Uint8Array(longKey);
+}
+
 module.exports = {
     signedToUnsigned,
     xor,
@@ -55,5 +68,6 @@ module.exports = {
     isString,
     isBuffer,
     isStringOrBuffer,
-    toUint8Array
+    toUint8Array,
+    expandKey
 };
