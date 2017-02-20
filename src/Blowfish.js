@@ -1,53 +1,6 @@
 const data = require('./data');
-const TextEncoder = require('../lib/encoding').TextEncoder;
+const helpers = require('./helpers');
 const TextDecoder = require('../lib/encoding').TextDecoder;
-// https://github.com/inexorabletash/text-encoding/issues/44
-
-function signedToUnsigned(signed) {
-    return signed >>> 0;
-}
-
-function xor(a, b) {
-    return signedToUnsigned(a ^ b);
-}
-
-function sumMod32(a, b) {
-    return signedToUnsigned((a + b) | 0);
-}
-
-function packFourBytes(byte1, byte2, byte3, byte4) {
-    return signedToUnsigned(byte1 << 24 | byte2 << 16 | byte3 << 8 | byte4);
-}
-
-function unpackFourBytes(pack) {
-    return [
-        (pack >>> 24) & 0xFF,
-        (pack >>> 16) & 0xFF,
-        (pack >>> 8) & 0xFF,
-        pack & 0xFF
-    ];
-}
-
-function isString(val) {
-    return typeof val === 'string';
-}
-
-function isBuffer(val) {
-    return typeof val === 'object' && 'byteLength' in val;
-}
-
-function isStringOrBuffer(val) {
-    return isString(val) || isBuffer(val);
-}
-
-function toUint8Array(val) {
-    if (isString(val)) {
-        return (new TextEncoder()).encode(val);
-    } else if (isBuffer(val)) {
-        return new Uint8Array(val);
-    }
-    throw new Error('Unsupported type');
-}
 
 class Blowfish {
 
@@ -76,7 +29,7 @@ class Blowfish {
     }
 
     constructor(key, mode = Blowfish.MODE.ECB, padding = Blowfish.PADDING.PKCS5) {
-        if (!isStringOrBuffer(key)) {
+        if (!helpers.isStringOrBuffer(key)) {
             throw new Error('Key should be a string or an ArrayBuffer / Buffer');
         }
         if (Object.keys(Blowfish.MODE).indexOf(mode) < 0) {
@@ -86,7 +39,7 @@ class Blowfish {
             throw new Error('Unsupported padding');
         }
 
-        this.key = toUint8Array(key);
+        this.key = helpers.toUint8Array(key);
         this.mode = mode;
         this.padding = padding;
         this.iv = new Uint8Array(0);
@@ -101,10 +54,10 @@ class Blowfish {
     }
 
     setIv(iv) {
-        if (!isStringOrBuffer(iv)) {
+        if (!helpers.isStringOrBuffer(iv)) {
             throw new Error('IV should be a string or an ArrayBuffer / Buffer');
         }
-        iv = toUint8Array(iv);
+        iv = helpers.toUint8Array(iv);
         if (iv.length !== 8) {
             throw new Error('IV should be 8 byte length');
         }
@@ -112,14 +65,14 @@ class Blowfish {
     }
 
     encode(data, returnType = Blowfish.TYPE.UINT8_ARRAY) {
-        if (!isStringOrBuffer(data)) {
+        if (!helpers.isStringOrBuffer(data)) {
             throw new Error('Encode data should be a string or an ArrayBuffer / Buffer');
         }
         if (this.mode !== Blowfish.MODE.ECB && this.iv.length === 0) {
             throw new Error('IV is not set');
         }
 
-        data = this._pad(toUint8Array(data));
+        data = this._pad(helpers.toUint8Array(data));
 
         switch (this.mode) {
             case Blowfish.MODE.ECB: {
@@ -146,13 +99,13 @@ class Blowfish {
     }
 
     decode(data, returnType = Blowfish.TYPE.STRING) {
-        if (!isStringOrBuffer(data)) {
+        if (!helpers.isStringOrBuffer(data)) {
             throw new Error('Decode data should be a string or an ArrayBuffer / Buffer');
         }
         if (this.mode !== Blowfish.MODE.ECB && this.iv.length === 0) {
             throw new Error('IV is not set');
         }
-        data = toUint8Array(data);
+        data = helpers.toUint8Array(data);
 
         if (data.length % 8 !== 0) {
             throw new Error('Decoded data should be multiple of 8 bytes');
@@ -284,8 +237,8 @@ class Blowfish {
     _generateSubkeys() {
         const longKey = this._generateLongKey();
         for (let i = 0, j = 0; i < 18; i++, j += 4) {
-            const n = packFourBytes(longKey[j], longKey[j + 1], longKey[j + 2], longKey[j + 3]);
-            this.p[i] = xor(this.p[i], n);
+            const n = helpers.packFourBytes(longKey[j], longKey[j + 1], longKey[j + 2], longKey[j + 3]);
+            this.p[i] = helpers.xor(this.p[i], n);
         }
         let l = 0;
         let r = 0;
@@ -305,25 +258,25 @@ class Blowfish {
 
     _encryptBlock(l, r) {
         for (let i = 0; i < 16; i++) {
-            l = xor(l, this.p[i]);
-            r = xor(r, this._f(l));
+            l = helpers.xor(l, this.p[i]);
+            r = helpers.xor(r, this._f(l));
             [l, r] = [r, l];
         }
         [l, r] = [r, l];
-        r = xor(r, this.p[16]);
-        l = xor(l, this.p[17]);
+        r = helpers.xor(r, this.p[16]);
+        l = helpers.xor(l, this.p[17]);
         return [l, r];
     }
 
     _decryptBlock(l, r) {
         for (let i = 17; i > 1; i--) {
-            l = xor(l, this.p[i]);
-            r = xor(r, this._f(l));
+            l = helpers.xor(l, this.p[i]);
+            r = helpers.xor(r, this._f(l));
             [l, r] = [r, l];
         }
         [l, r] = [r, l];
-        r = xor(r, this.p[1]);
-        l = xor(l, this.p[0]);
+        r = helpers.xor(r, this.p[1]);
+        l = helpers.xor(l, this.p[0]);
         return [l, r];
     }
 
@@ -333,35 +286,35 @@ class Blowfish {
         const c = (x >>> 8) & 0xFF;
         const d = x & 0xFF;
 
-        let res = sumMod32(this.s[0][a], this.s[1][b]);
-        res = xor(res, this.s[2][c]);
-        return sumMod32(res, this.s[3][d]);
+        let res = helpers.sumMod32(this.s[0][a], this.s[1][b]);
+        res = helpers.xor(res, this.s[2][c]);
+        return helpers.sumMod32(res, this.s[3][d]);
     }
 
     _encodeECB(bytes) {
         const encoded = new Uint8Array(bytes.length);
         for (let i = 0; i < bytes.length; i += 8) {
-            let l = packFourBytes(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
-            let r = packFourBytes(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
+            let l = helpers.packFourBytes(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
+            let r = helpers.packFourBytes(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
             [l, r] = this._encryptBlock(l, r);
-            encoded.set(unpackFourBytes(l), i);
-            encoded.set(unpackFourBytes(r), i + 4);
+            encoded.set(helpers.unpackFourBytes(l), i);
+            encoded.set(helpers.unpackFourBytes(r), i + 4);
         }
         return encoded;
     }
 
     _encodeCBC(bytes) {
         const encoded = new Uint8Array(bytes.length);
-        let prevL = packFourBytes(this.iv[0], this.iv[1], this.iv[2], this.iv[3]);
-        let prevR = packFourBytes(this.iv[4], this.iv[5], this.iv[6], this.iv[7]);
+        let prevL = helpers.packFourBytes(this.iv[0], this.iv[1], this.iv[2], this.iv[3]);
+        let prevR = helpers.packFourBytes(this.iv[4], this.iv[5], this.iv[6], this.iv[7]);
         for (let i = 0; i < bytes.length; i += 8) {
-            let l = packFourBytes(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
-            let r = packFourBytes(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
-            [l, r] = [xor(prevL, l), xor(prevR, r)];
+            let l = helpers.packFourBytes(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
+            let r = helpers.packFourBytes(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
+            [l, r] = [helpers.xor(prevL, l), helpers.xor(prevR, r)];
             [l, r] = this._encryptBlock(l, r);
             [prevL, prevR] = [l, r];
-            encoded.set(unpackFourBytes(l), i);
-            encoded.set(unpackFourBytes(r), i + 4);
+            encoded.set(helpers.unpackFourBytes(l), i);
+            encoded.set(helpers.unpackFourBytes(r), i + 4);
         }
         return encoded;
     }
@@ -369,30 +322,30 @@ class Blowfish {
     _decodeECB(bytes) {
         const decoded = new Uint8Array(bytes.length);
         for (let i = 0; i < bytes.length; i += 8) {
-            let l = packFourBytes(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
-            let r = packFourBytes(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
+            let l = helpers.packFourBytes(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
+            let r = helpers.packFourBytes(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
             [l, r] = this._decryptBlock(l, r);
-            decoded.set(unpackFourBytes(l), i);
-            decoded.set(unpackFourBytes(r), i + 4);
+            decoded.set(helpers.unpackFourBytes(l), i);
+            decoded.set(helpers.unpackFourBytes(r), i + 4);
         }
         return decoded;
     }
 
     _decodeCBC(bytes) {
         const decoded = new Uint8Array(bytes.length);
-        let prevL = packFourBytes(this.iv[0], this.iv[1], this.iv[2], this.iv[3]);
-        let prevR = packFourBytes(this.iv[4], this.iv[5], this.iv[6], this.iv[7]);
+        let prevL = helpers.packFourBytes(this.iv[0], this.iv[1], this.iv[2], this.iv[3]);
+        let prevR = helpers.packFourBytes(this.iv[4], this.iv[5], this.iv[6], this.iv[7]);
         let prevLTmp;
         let prevRTmp;
         for (let i = 0; i < bytes.length; i += 8) {
-            let l = packFourBytes(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
-            let r = packFourBytes(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
+            let l = helpers.packFourBytes(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
+            let r = helpers.packFourBytes(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
             [prevLTmp, prevRTmp] = [l, r];
             [l, r] = this._decryptBlock(l, r);
-            [l, r] = [xor(prevL, l), xor(prevR, r)];
+            [l, r] = [helpers.xor(prevL, l), helpers.xor(prevR, r)];
             [prevL, prevR] = [prevLTmp, prevRTmp];
-            decoded.set(unpackFourBytes(l), i);
-            decoded.set(unpackFourBytes(r), i + 4);
+            decoded.set(helpers.unpackFourBytes(l), i);
+            decoded.set(helpers.unpackFourBytes(r), i + 4);
         }
         return decoded;
     }
