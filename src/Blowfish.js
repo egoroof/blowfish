@@ -28,7 +28,6 @@ class Blowfish {
             throw new Error('Unsupported padding');
         }
 
-        this.key = helpers.toUint8Array(key);
         this.mode = mode;
         this.padding = padding;
         this.iv = new Uint8Array(0);
@@ -39,7 +38,26 @@ class Blowfish {
             data.S2.slice(),
             data.S3.slice()
         ];
-        this._generateSubkeys();
+
+        key = helpers.expandKey(helpers.toUint8Array(key));
+        for (let i = 0, j = 0; i < 18; i++, j += 4) {
+            const n = helpers.packFourBytes(key[j], key[j + 1], key[j + 2], key[j + 3]);
+            this.p[i] = helpers.xor(this.p[i], n);
+        }
+        let l = 0;
+        let r = 0;
+        for (let i = 0; i < 18; i += 2) {
+            [l, r] = this._encryptBlock(l, r);
+            this.p[i] = l;
+            this.p[i + 1] = r;
+        }
+        for (let i = 0; i < 4; i++) {
+            for (let j = 0; j < 256; j += 2) {
+                [l, r] = this._encryptBlock(l, r);
+                this.s[i][j] = l;
+                this.s[i][j + 1] = r;
+            }
+        }
     }
 
     setIv(iv) {
@@ -122,28 +140,6 @@ class Blowfish {
             }
             default: {
                 throw new Error('Unsupported return type');
-            }
-        }
-    }
-
-    _generateSubkeys() {
-        const key = helpers.expandKey(this.key);
-        for (let i = 0, j = 0; i < 18; i++, j += 4) {
-            const n = helpers.packFourBytes(key[j], key[j + 1], key[j + 2], key[j + 3]);
-            this.p[i] = helpers.xor(this.p[i], n);
-        }
-        let l = 0;
-        let r = 0;
-        for (let i = 0; i < 18; i += 2) {
-            [l, r] = this._encryptBlock(l, r);
-            this.p[i] = l;
-            this.p[i + 1] = r;
-        }
-        for (let i = 0; i < 4; i++) {
-            for (let j = 0; j < 256; j += 2) {
-                [l, r] = this._encryptBlock(l, r);
-                this.s[i][j] = l;
-                this.s[i][j + 1] = r;
             }
         }
     }
