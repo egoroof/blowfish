@@ -1,41 +1,30 @@
 const data = require('./data');
+const constants = require('./constants');
 const helpers = require('./helpers');
 const TextDecoder = require('../lib/encoding').TextDecoder;
 
 class Blowfish {
 
     static get MODE() {
-        return {
-            ECB: 'ECB',
-            CBC: 'CBC'
-        };
+        return constants.MODE;
     }
 
     static get PADDING() {
-        return {
-            PKCS5: 'PKCS5',
-            ONE_AND_ZEROS: 'ONE_AND_ZEROS',
-            LAST_BYTE: 'LAST_BYTE',
-            NULL: 'NULL',
-            SPACES: 'SPACES',
-        };
+        return constants.PADDING;
     }
 
     static get TYPE() {
-        return {
-            STRING: 'STRING',
-            UINT8_ARRAY: 'UINT8_ARRAY'
-        };
+        return constants.TYPE;
     }
 
-    constructor(key, mode = Blowfish.MODE.ECB, padding = Blowfish.PADDING.PKCS5) {
+    constructor(key, mode = constants.MODE.ECB, padding = constants.PADDING.PKCS5) {
         if (!helpers.isStringOrBuffer(key)) {
             throw new Error('Key should be a string or an ArrayBuffer / Buffer');
         }
-        if (Object.keys(Blowfish.MODE).indexOf(mode) < 0) {
+        if (Object.keys(constants.MODE).indexOf(mode) < 0) {
             throw new Error('Unsupported mode');
         }
-        if (Object.keys(Blowfish.PADDING).indexOf(padding) < 0) {
+        if (Object.keys(constants.PADDING).indexOf(padding) < 0) {
             throw new Error('Unsupported padding');
         }
 
@@ -64,32 +53,32 @@ class Blowfish {
         this.iv = iv;
     }
 
-    encode(data, returnType = Blowfish.TYPE.UINT8_ARRAY) {
+    encode(data, returnType = constants.TYPE.UINT8_ARRAY) {
         if (!helpers.isStringOrBuffer(data)) {
             throw new Error('Encode data should be a string or an ArrayBuffer / Buffer');
         }
-        if (this.mode !== Blowfish.MODE.ECB && this.iv.length === 0) {
+        if (this.mode !== constants.MODE.ECB && this.iv.length === 0) {
             throw new Error('IV is not set');
         }
 
-        data = this._pad(helpers.toUint8Array(data));
+        data = helpers.pad(helpers.toUint8Array(data), this.padding);
 
         switch (this.mode) {
-            case Blowfish.MODE.ECB: {
+            case constants.MODE.ECB: {
                 data = this._encodeECB(data);
                 break;
             }
-            case Blowfish.MODE.CBC: {
+            case constants.MODE.CBC: {
                 data = this._encodeCBC(data);
                 break;
             }
         }
 
         switch (returnType) {
-            case Blowfish.TYPE.UINT8_ARRAY: {
+            case constants.TYPE.UINT8_ARRAY: {
                 return data;
             }
-            case Blowfish.TYPE.STRING: {
+            case constants.TYPE.STRING: {
                 return (new TextDecoder()).decode(data);
             }
             default: {
@@ -98,11 +87,11 @@ class Blowfish {
         }
     }
 
-    decode(data, returnType = Blowfish.TYPE.STRING) {
+    decode(data, returnType = constants.TYPE.STRING) {
         if (!helpers.isStringOrBuffer(data)) {
             throw new Error('Decode data should be a string or an ArrayBuffer / Buffer');
         }
-        if (this.mode !== Blowfish.MODE.ECB && this.iv.length === 0) {
+        if (this.mode !== constants.MODE.ECB && this.iv.length === 0) {
             throw new Error('IV is not set');
         }
         data = helpers.toUint8Array(data);
@@ -112,113 +101,29 @@ class Blowfish {
         }
 
         switch (this.mode) {
-            case Blowfish.MODE.ECB: {
+            case constants.MODE.ECB: {
                 data = this._decodeECB(data);
                 break;
             }
-            case Blowfish.MODE.CBC: {
+            case constants.MODE.CBC: {
                 data = this._decodeCBC(data);
                 break;
             }
         }
 
-        data = this._unpad(data);
+        data = helpers.unpad(data, this.padding);
 
         switch (returnType) {
-            case Blowfish.TYPE.UINT8_ARRAY: {
+            case constants.TYPE.UINT8_ARRAY: {
                 return data;
             }
-            case Blowfish.TYPE.STRING: {
+            case constants.TYPE.STRING: {
                 return (new TextDecoder()).decode(data);
             }
             default: {
                 throw new Error('Unsupported return type');
             }
         }
-    }
-
-    _pad(bytes) {
-        const count = 8 - bytes.length % 8;
-        if (count === 8) {
-            return bytes;
-        }
-        const writer = new Uint8Array(bytes.length + count);
-        const newBytes = [];
-        let remaining = count;
-        let padChar = 0;
-
-        switch (this.padding) {
-            case Blowfish.PADDING.PKCS5: {
-                padChar = count;
-                break;
-            }
-            case Blowfish.PADDING.ONE_AND_ZEROS: {
-                newBytes.push(0x80);
-                remaining--;
-                break;
-            }
-            case Blowfish.PADDING.SPACES: {
-                padChar = 0x20;
-                break;
-            }
-        }
-
-        while (remaining > 0) {
-            if (this.padding === Blowfish.PADDING.LAST_BYTE && remaining === 1) {
-                newBytes.push(count);
-                break;
-            }
-            newBytes.push(padChar);
-            remaining--;
-        }
-
-        writer.set(bytes);
-        writer.set(newBytes, bytes.length);
-        return writer;
-    }
-
-    _unpad(bytes) {
-        let cutLength = 0;
-        switch (this.padding) {
-            case Blowfish.PADDING.LAST_BYTE:
-            case Blowfish.PADDING.PKCS5: {
-                const lastChar = bytes[bytes.length - 1];
-                if (lastChar < 8) {
-                    cutLength = lastChar;
-                }
-                break;
-            }
-            case Blowfish.PADDING.ONE_AND_ZEROS: {
-                let i = 1;
-                while (i < 8) {
-                    const char = bytes[bytes.length - i];
-                    if (char === 0x80) {
-                        cutLength = i;
-                        break;
-                    }
-                    if (char !== 0) {
-                        break;
-                    }
-                    i++;
-                }
-                break;
-            }
-            case Blowfish.PADDING.NULL:
-            case Blowfish.PADDING.SPACES: {
-                const padChar = (this.padding === Blowfish.PADDING.SPACES) ? 0x20 : 0;
-                let i = 1;
-                while (i < 8) {
-                    const char = bytes[bytes.length - i];
-                    if (char !== padChar) {
-                        cutLength = i - 1;
-                        break;
-                    }
-                    i++;
-                }
-                break;
-            }
-        }
-        return bytes.subarray(0, bytes.length - cutLength);
     }
 
     _generateSubkeys() {

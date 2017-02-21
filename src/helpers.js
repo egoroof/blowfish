@@ -1,3 +1,4 @@
+const constants = require('./constants');
 const TextEncoder = require('../lib/encoding').TextEncoder;
 
 function signedToUnsigned(signed) {
@@ -59,6 +60,91 @@ function expandKey(key) {
     return new Uint8Array(longKey);
 }
 
+
+function pad(bytes, padding) {
+    const count = 8 - bytes.length % 8;
+    if (count === 8) {
+        return bytes;
+    }
+    const writer = new Uint8Array(bytes.length + count);
+    const newBytes = [];
+    let remaining = count;
+    let padChar = 0;
+
+    switch (padding) {
+        case constants.PADDING.PKCS5: {
+            padChar = count;
+            break;
+        }
+        case constants.PADDING.ONE_AND_ZEROS: {
+            newBytes.push(0x80);
+            remaining--;
+            break;
+        }
+        case constants.PADDING.SPACES: {
+            padChar = 0x20;
+            break;
+        }
+    }
+
+    while (remaining > 0) {
+        if (padding === constants.PADDING.LAST_BYTE && remaining === 1) {
+            newBytes.push(count);
+            break;
+        }
+        newBytes.push(padChar);
+        remaining--;
+    }
+
+    writer.set(bytes);
+    writer.set(newBytes, bytes.length);
+    return writer;
+}
+
+function unpad(bytes, padding) {
+    let cutLength = 0;
+    switch (padding) {
+        case constants.PADDING.LAST_BYTE:
+        case constants.PADDING.PKCS5: {
+            const lastChar = bytes[bytes.length - 1];
+            if (lastChar < 8) {
+                cutLength = lastChar;
+            }
+            break;
+        }
+        case constants.PADDING.ONE_AND_ZEROS: {
+            let i = 1;
+            while (i < 8) {
+                const char = bytes[bytes.length - i];
+                if (char === 0x80) {
+                    cutLength = i;
+                    break;
+                }
+                if (char !== 0) {
+                    break;
+                }
+                i++;
+            }
+            break;
+        }
+        case constants.PADDING.NULL:
+        case constants.PADDING.SPACES: {
+            const padChar = (padding === constants.PADDING.SPACES) ? 0x20 : 0;
+            let i = 1;
+            while (i < 8) {
+                const char = bytes[bytes.length - i];
+                if (char !== padChar) {
+                    cutLength = i - 1;
+                    break;
+                }
+                i++;
+            }
+            break;
+        }
+    }
+    return bytes.subarray(0, bytes.length - cutLength);
+}
+
 module.exports = {
     signedToUnsigned,
     xor,
@@ -69,5 +155,7 @@ module.exports = {
     isBuffer,
     isStringOrBuffer,
     toUint8Array,
-    expandKey
+    expandKey,
+    pad,
+    unpad
 };
