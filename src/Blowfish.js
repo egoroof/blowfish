@@ -21,10 +21,10 @@ class Blowfish {
         if (!helpers.isStringOrBuffer(key)) {
             throw new Error('Key should be a string or an ArrayBuffer / Buffer');
         }
-        if (Object.keys(constants.MODE).indexOf(mode) < 0) {
+        if (!helpers.includes(constants.MODE, mode)) {
             throw new Error('Unsupported mode');
         }
-        if (Object.keys(constants.PADDING).indexOf(padding) < 0) {
+        if (!helpers.includes(constants.PADDING, padding)) {
             throw new Error('Unsupported padding');
         }
 

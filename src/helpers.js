@@ -38,6 +38,10 @@ function isStringOrBuffer(val) {
     return isString(val) || isBuffer(val);
 }
 
+function includes(obj, key) {
+    return Object.keys(obj).indexOf(key) >= 0;
+}
+
 function toUint8Array(val) {
     if (isString(val)) {
         return (new TextEncoder()).encode(val);
@@ -154,6 +158,7 @@ module.exports = {
     isString,
     isBuffer,
     isStringOrBuffer,
+    includes,
     toUint8Array,
     expandKey,
     pad,
