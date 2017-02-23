@@ -13,4 +13,4 @@ before_install:
 
 after_success:
   # send coverage from nodejs 6 only
-  - "[[ $TRAVIS_NODE_VERSION == 6.* ]] && npm run coverage"
+  - "[[ $TRAVIS_NODE_VERSION == 6 ]] && npm run coverage"
