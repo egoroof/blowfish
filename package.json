@@ -5,7 +5,7 @@
   "main": "dist/blowfish.js",
   "scripts": {
     "lint": "eslint -c tools/.eslintrc.js src/**/*.js",
-    "build": "webpack -p --config tools/webpack.config.js",
+    "build": "rollup -f umd -n Blowfish -i src/Blowfish.js -o dist/blowfish.rollup.js",
     "coverage": "nyc mocha test/node.js coverage && nyc report --reporter=text-lcov | coveralls",
     "test": "npm run lint && npm run build && npm run test:node && npm run test:browser",
     "test:browser": "karma start tools/karma.conf.js",
@@ -54,6 +54,7 @@
     "karma-safari-launcher": "1.0.0",
     "mocha": "3.2.0",
     "nyc": "10.1.2",
+    "rollup": "0.41.4",
     "webpack": "2.2.1"
   },
   "engines": {

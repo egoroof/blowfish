@@ -2,7 +2,7 @@ module.exports = {
     entry: './src/Blowfish.js',
     output: {
         path: './dist',
-        filename: 'blowfish.js',
+        filename: 'blowfish.es6.js',
         library: 'Blowfish',
         libraryTarget: 'umd'
     },

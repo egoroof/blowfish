@@ -12,7 +12,7 @@ switch (mode) {
         Blowfish = require('../src/Blowfish');
         break;
     default:
-        Blowfish = require('../dist/blowfish');
+        Blowfish = require('../dist/blowfish.es6').default;
         break;
 }
 

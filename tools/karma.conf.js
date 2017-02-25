@@ -18,7 +18,7 @@ module.exports = (config) => {
         basePath: '../',
         frameworks: ['mocha', 'chai'],
         files: [
-            'dist/blowfish.js',
+            'dist/blowfish.es6.js',
             'test/common.js',
             'test/browser.js'
         ],
