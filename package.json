@@ -27,7 +27,8 @@
     "ecb",
     "cbc",
     "encryption",
-    "decryption"
+    "decryption",
+    "library"
   ],
   "author": "egoroof",
   "files": [
