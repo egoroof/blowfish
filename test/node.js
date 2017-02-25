@@ -1,20 +1,7 @@
-'use strict'; // node 4 and 5 legacy
-
 const crypto = require('crypto');
 const expect = require('chai').expect;
 const tests = require('./common');
-const mode = process.argv[3]; // test, coverage
-
-let Blowfish;
-
-switch (mode) {
-    case 'coverage':
-        Blowfish = require('../src/Blowfish'); // todo
-        break;
-    default:
-        Blowfish = require('../dist/blowfish');
-        break;
-}
+const Blowfish = require('../dist/blowfish');
 
 tests.forEach((testPack) => {
     describe(testPack.describe, () => {

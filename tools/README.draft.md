@@ -1,13 +1,12 @@
-# Blowfish [![npm package][npm-badge]][npm] [![Travis][build-badge]][build] [![Coveralls][coverage-badge]][coverage]
+# Blowfish
+
+[![npm package][npm-badge]][npm] [![Travis][build-badge]][build]
 
 [build-badge]: https://img.shields.io/travis/egoroof/blowfish.svg?style=flat-square
 [build]: https://travis-ci.org/egoroof/blowfish
 
 [npm-badge]: https://img.shields.io/npm/v/egoroof-blowfish.svg?style=flat-square
 [npm]: https://www.npmjs.org/package/egoroof-blowfish
-
-[coverage-badge]: https://img.shields.io/coveralls/egoroof/blowfish.svg?style=flat-square
-[coverage]: https://coveralls.io/github/egoroof/blowfish
 
 [Blowfish](https://en.wikipedia.org/wiki/Blowfish_(cipher)) encryption library for browsers and Node.js.
 

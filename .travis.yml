@@ -10,7 +10,3 @@ node_js:
 before_install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
-
-after_success:
-  # send coverage from nodejs 6 only
-  - "[[ $TRAVIS_NODE_VERSION == 6 ]] && npm run coverage"
