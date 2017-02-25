@@ -1,7 +1,8 @@
 const crypto = require('crypto');
 const expect = require('chai').expect;
 const tests = require('./common');
-const Blowfish = require('../dist/blowfish');
+const pack = require('../package.json');
+const Blowfish = require(`../${pack.main}`);
 
 tests.forEach((testPack) => {
     describe(testPack.describe, () => {
