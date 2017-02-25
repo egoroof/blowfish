@@ -9,10 +9,10 @@ let Blowfish;
 
 switch (mode) {
     case 'coverage':
-        Blowfish = require('../src/Blowfish');
+        Blowfish = require('../src/Blowfish'); // todo
         break;
     default:
-        Blowfish = require('../dist/blowfish.es6').default;
+        Blowfish = require('../dist/blowfish');
         break;
 }
 
