@@ -1,3 +1,7 @@
+<!--
+Be sure you are editing the draft (/tools/README.draft.md) not the root readme as it's generated automatically.
+-->
+
 # Blowfish
 
 [![npm package][npm-badge]][npm] [![Travis][build-badge]][build]
@@ -10,22 +14,16 @@
 
 [Blowfish](https://en.wikipedia.org/wiki/Blowfish_(cipher)) encryption library for browsers and Node.js.
 
+Works in Node.js 4+, IE10+ and all modern browsers.
+
 ## Table of Contents
 
-- [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
   - [Example](#example)
   - [Block cipher mode of operation](#block-cipher-mode-of-operation)
   - [Padding](#padding)
   - [Return type](#return-type)
-
-## Requirements
-
-For browsers: [Typed Arrays](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays).
-Tested in latest Chrome, Firefox, Safari, Edge and IE11 (IE10 isn't tested but should work).
-
-Node.js 4 - 7 are tested and works well.
 
 ## Installation
 
@@ -42,12 +40,6 @@ For Node.js and browser module loaders like `webpack`, `browserify`, etc. instal
 
 ```
 npm install egoroof-blowfish --save
-```
-
-Or using [yarn](https://yarnpkg.com/):
-
-```
-yarn add egoroof-blowfish
 ```
 
 Then you will be able to use it:
