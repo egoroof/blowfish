@@ -1,9 +1,6 @@
 sudo: false
 language: node_js
 
-git:
-  depth: 3
-
 node_js:
   - "4"
   - "5"
