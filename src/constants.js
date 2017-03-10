@@ -1,17 +1,17 @@
 export const MODE = {
-    ECB: 'ECB',
-    CBC: 'CBC'
+    ECB: 0,
+    CBC: 1
 };
 
 export const PADDING = {
-    PKCS5: 'PKCS5',
-    ONE_AND_ZEROS: 'ONE_AND_ZEROS',
-    LAST_BYTE: 'LAST_BYTE',
-    NULL: 'NULL',
-    SPACES: 'SPACES',
+    PKCS5: 0,
+    ONE_AND_ZEROS: 1,
+    LAST_BYTE: 2,
+    NULL: 3,
+    SPACES: 4
 };
 
 export const TYPE = {
-    STRING: 'STRING',
-    UINT8_ARRAY: 'UINT8_ARRAY'
+    STRING: 0,
+    UINT8_ARRAY: 1
 };

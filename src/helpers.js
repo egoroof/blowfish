@@ -38,8 +38,14 @@ export function isStringOrBuffer(val) {
     return isString(val) || isBuffer(val);
 }
 
-export function includes(obj, key) {
-    return Object.keys(obj).indexOf(key) >= 0;
+export function includes(obj, val) {
+    let result = false;
+    Object.keys(obj).forEach(key => {
+        if (obj[key] === val) {
+            result = true;
+        }
+    });
+    return result;
 }
 
 export function toUint8Array(val) {
