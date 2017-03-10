@@ -9,9 +9,6 @@ module.exports = {
         "node": true,
         "mocha": true
     },
-    "globals": {
-        Blowfish: false
-    },
     "extends": "eslint:recommended",
     "rules": {
         "indent": 0,

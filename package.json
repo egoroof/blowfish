@@ -4,7 +4,7 @@
   "description": "Blowfish encryption library for browsers and Node.js",
   "main": "dist/blowfish.js",
   "scripts": {
-    "lint": "eslint -c tools/.eslintrc.js src/**/*.js",
+    "lint": "eslint -c tools/.eslintrc.js src test tools",
     "build": "npm run build:concat && npm run build:transpile && npm run build:wrap && npm run build:compress",
     "build:concat": "rollup -f es -i src/Blowfish.js -o dist/blowfish.js && node tools/show_dist_size",
     "build:transpile": "babel dist/blowfish.js -o dist/blowfish.js && node tools/show_dist_size",
