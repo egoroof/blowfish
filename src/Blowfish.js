@@ -1,5 +1,4 @@
-import {P, S0, S1, S2, S3} from './data';
-import {MODE, PADDING, TYPE} from './constants';
+import {MODE, PADDING, TYPE, P, S0, S1, S2, S3} from './constants';
 import {
     isStringOrBuffer,
     includes,
