@@ -40,7 +40,7 @@ export default class Blowfish {
 
         this.mode = mode;
         this.padding = padding;
-        this.iv = new Uint8Array(0);
+        this.iv = null;
         this.p = P.slice();
         this.s = [
             S0.slice(),
@@ -85,7 +85,7 @@ export default class Blowfish {
         if (!isStringOrBuffer(data)) {
             throw new Error('Encode data should be a string or an ArrayBuffer / Buffer');
         }
-        if (this.mode !== MODE.ECB && this.iv.length === 0) {
+        if (this.mode !== MODE.ECB && !this.iv) {
             throw new Error('IV is not set');
         }
 
@@ -119,7 +119,7 @@ export default class Blowfish {
         if (!isStringOrBuffer(data)) {
             throw new Error('Decode data should be a string or an ArrayBuffer / Buffer');
         }
-        if (this.mode !== MODE.ECB && this.iv.length === 0) {
+        if (this.mode !== MODE.ECB && !this.iv) {
             throw new Error('IV is not set');
         }
         data = toUint8Array(data);

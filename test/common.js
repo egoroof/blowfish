@@ -1,14 +1,16 @@
+/* eslint-disable prefer-arrow-callback */
+
 const tests = [{
     describe: 'default parameters',
     it: [{
         describe: 'should set ECB mode',
-        test: function(Blowfish, expect) {
+        test: function (Blowfish, expect) {
             const bf = new Blowfish('a');
             expect(bf.mode).to.equal(Blowfish.MODE.ECB);
         }
     }, {
         describe: 'should set PKCS5 padding',
-        test: function(Blowfish, expect) {
+        test: function (Blowfish, expect) {
             const bf = new Blowfish('a');
             expect(bf.padding).to.equal(Blowfish.PADDING.PKCS5);
         }
@@ -17,7 +19,7 @@ const tests = [{
     describe: 'mode ECB, padding NULL',
     it: [{
         describe: 'should correctly encode / decode english text',
-        test: function(Blowfish, expect) {
+        test: function (Blowfish, expect) {
             const key = 'super key';
             const text = 'Encoded string';
             const textEncoded = new Uint8Array([
@@ -33,7 +35,7 @@ const tests = [{
         }
     }, {
         describe: 'should correctly encode / decode russian text',
-        test: function(Blowfish, expect) {
+        test: function (Blowfish, expect) {
             const key = 'super key';
             const text = 'Строка на русском';
             const textEncoded = new Uint8Array([
@@ -50,7 +52,7 @@ const tests = [{
         }
     }, {
         describe: 'should correctly encode / decode emoji text',
-        test: function(Blowfish, expect) {
+        test: function (Blowfish, expect) {
             const key = 'super key';
             const text = '🎅🎅🎅🎅🎅';
             const textEncoded = new Uint8Array([
@@ -69,8 +71,22 @@ const tests = [{
 }, {
     describe: 'mode CBC, padding NULL',
     it: [{
+        describe: 'should throw if no IV present',
+        test: function (Blowfish, expect) {
+            const key = 'super key';
+            const bf = new Blowfish(key, Blowfish.MODE.CBC, Blowfish.PADDING.NULL);
+
+            expect(function () {
+                bf.decode(new Uint8Array([0xff]));
+            }).to.throw(Error, 'IV is not set');
+
+            expect(function () {
+                bf.encode('wazzzaaap');
+            }).to.throw(Error, 'IV is not set');
+        }
+    }, {
         describe: 'should correctly encode / decode english text',
-        test: function(Blowfish, expect) {
+        test: function (Blowfish, expect) {
             const key = 'super key';
             const text = 'Encoded string';
             const textEncoded = new Uint8Array([
@@ -87,7 +103,7 @@ const tests = [{
         }
     }, {
         describe: 'should correctly encode / decode russian text',
-        test: function(Blowfish, expect) {
+        test: function (Blowfish, expect) {
             const key = 'super key';
             const text = 'Строка на русском';
             const textEncoded = new Uint8Array([
@@ -105,7 +121,7 @@ const tests = [{
         }
     }, {
         describe: 'should correctly encode / decode emoji text',
-        test: function(Blowfish, expect) {
+        test: function (Blowfish, expect) {
             const key = 'super key';
             const text = '🎅🎅🎅🎅🎅';
             const textEncoded = new Uint8Array([
