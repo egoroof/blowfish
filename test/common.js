@@ -138,6 +138,64 @@ const tests = [{
             expect(encoded).to.eql(textEncoded);
         }
     }]
+}, {
+    describe: 'paddings',
+    it: [{
+        describe: 'PKCS5',
+        test: function (Blowfish, expect) {
+            const text = 'one';
+            const bf = new Blowfish('a', Blowfish.MODE.ECB, Blowfish.PADDING.PKCS5);
+            const encoded = bf.encode(text);
+            const decoded = bf.decode(encoded);
+
+            expect(encoded).to.eql(new Uint8Array([9, 15, 171, 186, 26, 102, 153, 232]));
+            expect(decoded).to.eql(text);
+        }
+    }, {
+        describe: 'ONE_AND_ZEROS',
+        test: function (Blowfish, expect) {
+            const text = 'one';
+            const bf = new Blowfish('a', Blowfish.MODE.ECB, Blowfish.PADDING.ONE_AND_ZEROS);
+            const encoded = bf.encode(text);
+            const decoded = bf.decode(encoded);
+
+            expect(encoded).to.eql(new Uint8Array([217, 124, 252, 140, 165, 248, 193, 10]));
+            expect(decoded).to.eql(text);
+        }
+    }, {
+        describe: 'LAST_BYTE',
+        test: function (Blowfish, expect) {
+            const text = 'one';
+            const bf = new Blowfish('a', Blowfish.MODE.ECB, Blowfish.PADDING.LAST_BYTE);
+            const encoded = bf.encode(text);
+            const decoded = bf.decode(encoded);
+
+            expect(encoded).to.eql(new Uint8Array([118, 17, 186, 169, 188, 58, 214, 239]));
+            expect(decoded).to.eql(text);
+        }
+    }, {
+        describe: 'NULL',
+        test: function (Blowfish, expect) {
+            const text = 'one';
+            const bf = new Blowfish('a', Blowfish.MODE.ECB, Blowfish.PADDING.NULL);
+            const encoded = bf.encode(text);
+            const decoded = bf.decode(encoded);
+
+            expect(encoded).to.eql(new Uint8Array([156, 175, 87, 29, 36, 207, 153, 163]));
+            expect(decoded).to.eql(text);
+        }
+    }, {
+        describe: 'SPACES',
+        test: function (Blowfish, expect) {
+            const text = 'one';
+            const bf = new Blowfish('a', Blowfish.MODE.ECB, Blowfish.PADDING.SPACES);
+            const encoded = bf.encode(text);
+            const decoded = bf.decode(encoded);
+
+            expect(encoded).to.eql(new Uint8Array([65, 110, 215, 189, 119, 133, 130, 128]));
+            expect(decoded).to.eql(text);
+        }
+    }]
 }];
 
 if (typeof exports === 'object' && typeof module === 'object') {
