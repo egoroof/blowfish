@@ -27,9 +27,6 @@ Works in Node.js 4+, IE10+ and all modern browsers.
 
 ## Installation
 
-This library is wrapped with [Universal Module Definition](https://github.com/umdjs/umd). This means you will not
-have any problems to use it with different script loaders.
-
 For browsers you can include library via [unpkg](https://unpkg.com/) CDN (###gzip_size### KiB gzip) or save it to local machine:
 
 ```html
