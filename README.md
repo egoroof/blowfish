@@ -48,7 +48,7 @@ const Blowfish = require('egoroof-blowfish');
 ## Usage
 
 All input data including key, IV, plaintext and ciphertext should be a `String` or `ArrayBuffer` / `Buffer`.
-Strings supports all unicode including emoji ✨.
+Strings support all unicode including emoji ✨.
 
 ### Example
 
