@@ -1,6 +1,5 @@
 const assert = require('assert');
-const pack = require('../package.json');
-const Blowfish = require(`../${pack.main}`);
+const Blowfish = require('../dist/blowfish');
 
 describe(__filename.substr(process.cwd().length), () => {
     it('set ECB mode', () => {
