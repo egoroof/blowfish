@@ -46,7 +46,7 @@
     "eslint": "^3.19.0",
     "mocha": "^3.2.0",
     "rollup": "^0.41.5",
-    "uglify-js": "^2.8.11"
+    "uglify-js": "^3.0.1"
   },
   "engines": {
     "node": ">=4.0.0"
