@@ -38,8 +38,8 @@ describe(__filename.substr(process.cwd().length), () => {
             nodeDecipher.final()
         ]);
 
-        assert.deepStrictEqual(encoded, nodeEncoded);
-        assert.deepStrictEqual(decoded, nodeDecoded);
+        assert.deepStrictEqual(encoded, new Uint8Array(nodeEncoded));
+        assert.deepStrictEqual(decoded, new Uint8Array(nodeDecoded));
     });
     it('ONE_AND_ZEROS', () => {
         const encodedText = new Uint8Array([
