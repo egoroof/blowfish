@@ -6,14 +6,14 @@
   "scripts": {
     "lint": "eslint -c tools/.eslintrc.js src test tools",
     "build": "npm run build:concat && npm run build:transpile && npm run build:wrap && npm run build:compress",
-    "build:concat": "rollup -f es -i src/Blowfish.js -o dist/blowfish.js && node tools/show_dist_size",
-    "build:transpile": "babel dist/blowfish.js -o dist/blowfish.js && node tools/show_dist_size",
-    "build:wrap": "rollup -f umd -n Blowfish -i dist/blowfish.js -o dist/blowfish.js && node tools/show_dist_size",
-    "build:compress": "uglifyjs dist/blowfish.js -o dist/blowfish.js -m -c && node tools/show_dist_size",
+    "build:concat": "rollup -f es -i src/Blowfish.js -o dist/blowfish.js && node tools/distSize",
+    "build:transpile": "babel dist/blowfish.js -o dist/blowfish.js && node tools/distSize",
+    "build:wrap": "rollup -f umd -n Blowfish -i dist/blowfish.js -o dist/blowfish.js && node tools/distSize",
+    "build:compress": "uglifyjs dist/blowfish.js -o dist/blowfish.js -m -c && node tools/distSize",
     "test": "npm run lint && npm run build && npm run mocha",
     "mocha": "mocha",
     "preversion": "npm test",
-    "version": "node tools/prepare_readme && git add package.json README.md",
+    "version": "node tools/prepareReadme && git add package.json README.md",
     "postversion": "git push && git push --tags && npm publish"
   },
   "repository": {
@@ -41,12 +41,12 @@
   },
   "homepage": "https://github.com/egoroof/blowfish#readme",
   "devDependencies": {
-    "babel-cli": "^6.23.0",
-    "babel-preset-env": "^1.2.1",
-    "eslint": "^3.19.0",
-    "mocha": "^3.2.0",
-    "rollup": "^0.41.5",
-    "uglify-js": "^3.0.1"
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "eslint": "^4.6.0",
+    "mocha": "^3.5.0",
+    "rollup": "^0.49.2",
+    "uglify-js": "^3.0.28"
   },
   "engines": {
     "node": ">=4.0.0"
