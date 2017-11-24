@@ -81,7 +81,7 @@ export default class Blowfish {
         this.iv = iv;
     }
 
-    encode(data, returnType = TYPE.UINT8_ARRAY) {
+    encode(data) {
         if (!isStringOrBuffer(data)) {
             throw new Error('Encode data should be a string or an ArrayBuffer / Buffer');
         }
@@ -91,27 +91,10 @@ export default class Blowfish {
 
         data = pad(toUint8Array(data), this.padding);
 
-        switch (this.mode) {
-            case MODE.ECB: {
-                data = this._encodeECB(data);
-                break;
-            }
-            case MODE.CBC: {
-                data = this._encodeCBC(data);
-                break;
-            }
-        }
-
-        switch (returnType) {
-            case TYPE.UINT8_ARRAY: {
-                return data;
-            }
-            case TYPE.STRING: {
-                return (new TextDecoder()).decode(data);
-            }
-            default: {
-                throw new Error('Unsupported return type');
-            }
+        if (this.mode === MODE.ECB) {
+            return this._encodeECB(data);
+        } else if (this.mode === MODE.CBC) {
+            return this._encodeCBC(data);
         }
     }
 

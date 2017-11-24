@@ -56,7 +56,7 @@ Strings support all unicode including emoji ✨.
 const bf = new Blowfish('super key', Blowfish.MODE.ECB, Blowfish.PADDING.NULL); // only key isn't optional
 bf.setIv('abcdefgh'); // optional for ECB mode; bytes length should be equal 8
 
-const encoded = bf.encode('input text even with emoji 🎅', Blowfish.TYPE.UINT8_ARRAY); // type is optional
+const encoded = bf.encode('input text even with emoji 🎅');
 const decoded = bf.decode(encoded, Blowfish.TYPE.STRING); // type is optional
 ```
 
@@ -85,9 +85,9 @@ Blowfish.PADDING.SPACES // Pad with spaces
 
 ### Return type
 
-Which type of data should return functions `encode` and `decode`:
+Which type of data should return method `decode`:
 
 ```js
-Blowfish.TYPE.STRING // (default for decode) String
-Blowfish.TYPE.UINT8_ARRAY // (default for encode) Uint8Array
+Blowfish.TYPE.STRING // (default) String
+Blowfish.TYPE.UINT8_ARRAY // Uint8Array
 ```
