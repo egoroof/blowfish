@@ -30,7 +30,7 @@ Works in Node.js 4+, IE10+ and all modern browsers.
 For browsers you can include library via [unpkg](https://unpkg.com/) CDN (9.0 KiB gzip) or save it to local machine:
 
 ```html
-<script src="https://unpkg.com/egoroof-blowfish@2.0.0" crossorigin="anonymous" integrity="sha384-eyTO0feB+8rpercCt+UlEBRE6DVqBlHsgWM279RIcNn9DmwnEeUfiJsl42NyIEfa"></script>
+<script src="https://unpkg.com/egoroof-blowfish@2.1.0" crossorigin="anonymous" integrity="sha384-0H9x/+kblTVPh935mDnPd8xKFQKyQyAuJyBSmQWQ66Foe6lav6k0BZsiY5JsQ3Dm"></script>
 ```
 
 For Node.js and browser module loaders like `webpack`, `browserify`, etc. install it via [npm](https://www.npmjs.com/):
