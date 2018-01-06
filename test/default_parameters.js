@@ -1,7 +1,7 @@
 const assert = require('assert');
 const Blowfish = require('../dist/blowfish');
 
-describe(__filename.substr(process.cwd().length), () => {
+describe('default parameters', () => {
     it('set ECB mode', () => {
         const bf = new Blowfish('a');
         assert.deepStrictEqual(bf.mode, Blowfish.MODE.ECB);

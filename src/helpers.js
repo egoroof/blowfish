@@ -73,7 +73,7 @@ export function expandKey(key) {
 
 export function pad(bytes, padding) {
     const count = 8 - bytes.length % 8;
-    if (count === 8) {
+    if (count === 8 && bytes.length > 0) {
         return bytes;
     }
     const writer = new Uint8Array(bytes.length + count);
@@ -117,14 +117,14 @@ export function unpad(bytes, padding) {
         case PADDING.LAST_BYTE:
         case PADDING.PKCS5: {
             const lastChar = bytes[bytes.length - 1];
-            if (lastChar < 8) {
+            if (lastChar <= 8) {
                 cutLength = lastChar;
             }
             break;
         }
         case PADDING.ONE_AND_ZEROS: {
             let i = 1;
-            while (i < 8) {
+            while (i <= 8) {
                 const char = bytes[bytes.length - i];
                 if (char === 0x80) {
                     cutLength = i;
@@ -141,7 +141,7 @@ export function unpad(bytes, padding) {
         case PADDING.SPACES: {
             const padChar = (padding === PADDING.SPACES) ? 0x20 : 0;
             let i = 1;
-            while (i < 8) {
+            while (i <= 8) {
                 const char = bytes[bytes.length - i];
                 if (char !== padChar) {
                     cutLength = i - 1;

@@ -5,7 +5,7 @@ const Blowfish = require('../dist/blowfish');
 const defaultText = 'Encoded string';
 const defaultIv = 'abcdefhi';
 
-describe(__filename.substr(process.cwd().length), () => {
+describe('cbc', () => {
     it('PKCS5', () => {
         const encodedText = new Uint8Array([
             224, 247, 234, 62, 128, 250, 211, 229, 43, 43, 98, 121, 171, 228, 52, 254
@@ -17,6 +17,20 @@ describe(__filename.substr(process.cwd().length), () => {
 
         assert.deepStrictEqual(encoded, encodedText);
         assert.deepStrictEqual(decoded, defaultText);
+    });
+    it('PKCS5 empty string', () => {
+        const key = 'super key';
+        const encodedText = new Uint8Array([
+            0x5f, 0xed, 0x9d, 0x2c, 0x93, 0x8e, 0x51, 0x4e
+        ]);
+
+        const bf = new Blowfish(key, Blowfish.MODE.CBC, Blowfish.PADDING.PKCS5);
+        bf.setIv(defaultIv);
+        const encoded = bf.encode('');
+        const decoded = bf.decode(encodedText, Blowfish.TYPE.UINT8_ARRAY);
+
+        assert.deepStrictEqual(encoded, encodedText);
+        assert.deepStrictEqual(decoded, new Uint8Array(0));
     });
     it('PKCS5 nodejs crypto', () => {
         const key = 'super key';
