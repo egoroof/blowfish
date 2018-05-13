@@ -2,10 +2,9 @@ sudo: false
 language: node_js
 
 node_js:
-  - "4"
   - "6"
   - "8"
-  - "9"
+  - "10"
 
 after_success:
   - node tools/prepareReadme
