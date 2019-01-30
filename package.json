@@ -1,6 +1,6 @@
 {
   "name": "egoroof-blowfish",
-  "version": "2.1.0",
+  "version": "2.1.1-penbase",
   "description": "Blowfish encryption library for browsers and Node.js",
   "main": "dist/blowfish.js",
   "scripts": {
