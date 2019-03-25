@@ -3,6 +3,7 @@
   "version": "2.1.0",
   "description": "Blowfish encryption library for browsers and Node.js",
   "main": "dist/blowfish.js",
+  "types": "./egoroof-blowfish.d.ts",
   "scripts": {
     "lint": "eslint -c tools/.eslintrc.js src test tools",
     "build": "npm run build:concat && npm run build:transpile && npm run build:wrap && npm run build:compress",
