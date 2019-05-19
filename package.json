@@ -5,16 +5,16 @@
   "main": "dist/blowfish.js",
   "types": "./egoroof-blowfish.d.ts",
   "scripts": {
-    "lint": "eslint -c tools/.eslintrc.js src test tools",
-    "build": "npm run build:concat && npm run build:transpile && npm run build:wrap && npm run build:compress",
-    "build:concat": "rollup -f es -i src/Blowfish.js -o dist/blowfish.js && node tools/distSize",
-    "build:transpile": "babel dist/blowfish.js -o dist/blowfish.js && node tools/distSize",
-    "build:wrap": "rollup -f umd -n Blowfish -i dist/blowfish.js -o dist/blowfish.js && node tools/distSize",
-    "build:compress": "uglifyjs dist/blowfish.js -o dist/blowfish.js -m -c && node tools/distSize",
+    "lint": "eslint src test tools",
+    "build": "npm run build:concat && npm run build:transpile && npm run build:wrap && npm run build:compress && node tools/distSize",
+    "build:concat": "rollup -f es -i src/Blowfish.js -o dist/blowfish.js",
+    "build:transpile": "babel dist/blowfish.js -o dist/blowfish.js",
+    "build:wrap": "rollup -f umd -n Blowfish -i dist/blowfish.js -o dist/blowfish.js",
+    "build:compress": "uglifyjs dist/blowfish.js -o dist/blowfish.js -m -c",
     "test": "npm run lint && npm run build && npm run mocha",
     "mocha": "mocha",
     "preversion": "npm test",
-    "version": "node tools/prepareReadme && git add package.json README.md",
+    "version": "git add package.json package-lock.json",
     "postversion": "git push && git push --tags && npm publish"
   },
   "repository": {
@@ -42,13 +42,13 @@
   },
   "homepage": "https://github.com/egoroof/blowfish#readme",
   "devDependencies": {
-    "@babel/core": "7.0.0-beta.44",
-    "@babel/cli": "7.0.0-beta.44",
-    "@babel/preset-env": "7.0.0-beta.44",
-    "eslint": "^4.19.1",
-    "mocha": "^5.1.1",
-    "rollup": "^0.58.2",
-    "uglify-js": "^3.3.25"
+    "@babel/core": "^7.4.4",
+    "@babel/cli": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "eslint": "^5.16.0",
+    "mocha": "^6.1.4",
+    "rollup": "^1.12.3",
+    "uglify-js": "^3.5.13"
   },
   "engines": {
     "node": ">=4.0.0"
