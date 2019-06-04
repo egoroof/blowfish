@@ -5,6 +5,4 @@ node_js:
   - "6"
   - "8"
   - "10"
-
-after_success:
-  - node tools/prepareReadme
+  - "12"

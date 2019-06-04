@@ -1,5 +1,5 @@
 .idea/
 node_modules/
 dist/
-tools/todo.md
 npm-debug.log
+.DS_Store
