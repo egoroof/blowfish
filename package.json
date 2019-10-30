@@ -42,15 +42,12 @@
   },
   "homepage": "https://github.com/egoroof/blowfish#readme",
   "devDependencies": {
-    "@babel/core": "^7.4.4",
-    "@babel/cli": "^7.4.4",
-    "@babel/preset-env": "^7.4.4",
-    "eslint": "^5.16.0",
-    "mocha": "^6.1.4",
-    "rollup": "^1.12.3",
-    "uglify-js": "^3.5.13"
-  },
-  "engines": {
-    "node": ">=4.0.0"
+    "@babel/core": "^7.6.4",
+    "@babel/cli": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "eslint": "^6.6.0",
+    "mocha": "^6.2.2",
+    "rollup": "^1.26.0",
+    "uglify-js": "^3.6.5"
   }
 }
