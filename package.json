@@ -34,7 +34,8 @@
   "files": [
     "LICENSE.md",
     "README.md",
-    "dist/blowfish.js"
+    "dist/blowfish.js",
+    "egoroof-blowfish.d.ts"
   ],
   "license": "MIT",
   "bugs": {
