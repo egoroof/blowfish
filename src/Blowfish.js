@@ -11,7 +11,7 @@ import {
     unpad,
     sumMod32
 } from './helpers';
-import {TextDecoder} from '../lib/encoding';
+import {u8ToString} from './encoding';
 
 export default class Blowfish {
 
@@ -129,7 +129,7 @@ export default class Blowfish {
                 return data;
             }
             case TYPE.STRING: {
-                return (new TextDecoder()).decode(data);
+                return u8ToString(data);
             }
             default: {
                 throw new Error('Unsupported return type');

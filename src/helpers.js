@@ -1,5 +1,5 @@
 import {PADDING} from './constants';
-import {TextEncoder} from '../lib/encoding';
+import {stringToU8} from './encoding';
 
 export function signedToUnsigned(signed) {
     return signed >>> 0;
@@ -50,7 +50,7 @@ export function includes(obj, val) {
 
 export function toUint8Array(val) {
     if (isString(val)) {
-        return (new TextEncoder()).encode(val);
+        return stringToU8(val);
     } else if (isBuffer(val)) {
         return new Uint8Array(val);
     }
