@@ -70,10 +70,9 @@ export function expandKey(key) {
     return new Uint8Array(longKey);
 }
 
-
 export function pad(bytes, padding) {
     const count = 8 - bytes.length % 8;
-    if (count === 8 && bytes.length > 0 && padding != PADDING.PKCS5) {
+    if (count === 8 && bytes.length > 0 && padding !== PADDING.PKCS5) {
         return bytes;
     }
     const writer = new Uint8Array(bytes.length + count);

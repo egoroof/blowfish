@@ -6,8 +6,7 @@ const defaultText = 'Encoded string';
 const defaultIv = 'abcdefhi';
 
 describe('cbc', () => {
-
-    it('PKCS5 string length ==  16 ' , () => {
+    it('PKCS5 string length == 16' , () => {
         const textToEncode = 'totototototototo';
         const encodedText = new Uint8Array([
             11, 164, 138, 212, 75, 201, 194, 109, 92, 186, 109, 255, 247, 194, 150, 220, 156, 187, 32, 216, 151, 2, 185, 240
@@ -20,7 +19,7 @@ describe('cbc', () => {
         assert.deepStrictEqual(decoded, textToEncode);
     });
 
-    it('PKCS5 string length ==  7 ' , () => {
+    it('PKCS5 string length == 7' , () => {
         const textToEncode = 'tototot';
         const encodedText = new Uint8Array([
             159, 249, 22, 35, 233, 125, 239, 223
@@ -32,7 +31,7 @@ describe('cbc', () => {
         assert.deepStrictEqual(encoded, encodedText);
         assert.deepStrictEqual(decoded, textToEncode);
     });
-    it('PKCS5 string length == 8  ' , () => {
+    it('PKCS5 string length == 8' , () => {
         const textToEncode = 'totototo';
         const encodedText = new Uint8Array([
             11, 164, 138, 212, 75, 201, 194, 109, 108, 15, 105, 90, 14, 55, 195, 174
