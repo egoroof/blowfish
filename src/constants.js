@@ -1,6 +1,7 @@
 export const MODE = {
     ECB: 0,
-    CBC: 1
+    CBC: 1,
+    PCBC: 2,
 };
 
 export const PADDING = {

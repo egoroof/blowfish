@@ -95,6 +95,8 @@ export default class Blowfish {
             return this._encodeECB(data);
         } else if (this.mode === MODE.CBC) {
             return this._encodeCBC(data);
+        }  else if (this.mode === MODE.PCBC) {
+            return this._encodePCBC(data);
         }
     }
 
@@ -118,6 +120,10 @@ export default class Blowfish {
             }
             case MODE.CBC: {
                 data = this._decodeCBC(data);
+                break;
+            }
+            case MODE.PCBC: {
+                data = this._decodePCBC(data);
                 break;
             }
         }
@@ -200,6 +206,29 @@ export default class Blowfish {
         return encoded;
     }
 
+    _encodePCBC(bytes) {
+        const encoded = new Uint8Array(bytes.length);
+
+        let prevL = packFourBytes(this.iv[0], this.iv[1], this.iv[2], this.iv[3]);
+        let prevR = packFourBytes(this.iv[4], this.iv[5], this.iv[6], this.iv[7]);
+
+        for (let i = 0; i < bytes.length; i += 8) {
+            const planTextL = packFourBytes(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
+            const planTextR = packFourBytes(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
+
+            const [xorPrevL, xorPrevR] = [xor(prevL, planTextL), xor(prevR, planTextR)];
+            const [cipherL, cipherR] = this._encryptBlock(xorPrevL, xorPrevR);
+
+            const [xorCipherL, xorCipherR] = [xor(cipherL, planTextL), xor(cipherR, planTextR)];
+
+            [prevL, prevR] = [xorCipherL, xorCipherR];
+
+            encoded.set(unpackFourBytes(cipherL), i);
+            encoded.set(unpackFourBytes(cipherR), i + 4);
+        }
+        return encoded;
+    }
+
     _decodeECB(bytes) {
         const decoded = new Uint8Array(bytes.length);
         for (let i = 0; i < bytes.length; i += 8) {
@@ -227,6 +256,27 @@ export default class Blowfish {
             [prevL, prevR] = [prevLTmp, prevRTmp];
             decoded.set(unpackFourBytes(l), i);
             decoded.set(unpackFourBytes(r), i + 4);
+        }
+        return decoded;
+    }
+
+    _decodePCBC(bytes) {
+        const decoded = new Uint8Array(bytes.length);
+        let prevL = packFourBytes(this.iv[0], this.iv[1], this.iv[2], this.iv[3]);
+        let prevR = packFourBytes(this.iv[4], this.iv[5], this.iv[6], this.iv[7]);
+
+        for (let i = 0; i < bytes.length; i += 8) {
+            const cipherL = packFourBytes(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
+            const cipherR = packFourBytes(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
+
+            const [decryptedL, decryptedR] = this._decryptBlock(cipherL, cipherR);
+
+            const [plainTextL, plainTextR] = [xor(prevL, decryptedL), xor(prevR, decryptedR)];
+
+            [prevL, prevR] = [xor(cipherL, plainTextL), xor(cipherR, plainTextR)];
+
+            decoded.set(unpackFourBytes(plainTextL), i);
+            decoded.set(unpackFourBytes(plainTextR), i + 4);
         }
         return decoded;
     }
