@@ -54,6 +54,7 @@ https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation
 ```js
 Blowfish.MODE.ECB // (default) Electronic Codebook
 Blowfish.MODE.CBC // Cipher Block Chaining
+Blowfish.MODE.PCBC // Propagating Cipher Block Chaining
 ```
 
 ### Padding
