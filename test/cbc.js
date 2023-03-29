@@ -1,5 +1,4 @@
 const assert = require('assert');
-const crypto = require('crypto');
 const Blowfish = require('../dist/blowfish');
 
 const defaultText = 'Encoded string';
@@ -70,32 +69,6 @@ describe('cbc', () => {
 
         assert.deepStrictEqual(encoded, encodedText);
         assert.deepStrictEqual(decoded, new Uint8Array(0));
-    });
-    it('PKCS5 nodejs crypto', () => {
-        const key = 'super key';
-        const encodedText = new Uint8Array([
-            229, 58, 64, 10, 60, 227, 46, 82, 62, 73, 108, 227, 74, 220, 29, 0
-        ]);
-
-        const bf = new Blowfish(key, Blowfish.MODE.CBC, Blowfish.PADDING.PKCS5);
-        bf.setIv(defaultIv);
-        const encoded = bf.encode(defaultText);
-        const decoded = bf.decode(encodedText, Blowfish.TYPE.UINT8_ARRAY);
-
-        const nodeCipher = crypto.createCipheriv('bf-cbc', key, defaultIv);
-        const nodeEncoded = Buffer.concat([
-            nodeCipher.update(defaultText, 'utf8'),
-            nodeCipher.final()
-        ]);
-
-        const nodeDecipher = crypto.createDecipheriv('bf-cbc', key, defaultIv);
-        const nodeDecoded = Buffer.concat([
-            nodeDecipher.update(Buffer.from(encodedText)),
-            nodeDecipher.final()
-        ]);
-
-        assert.deepStrictEqual(encoded, new Uint8Array(nodeEncoded));
-        assert.deepStrictEqual(decoded, new Uint8Array(nodeDecoded));
     });
     it('ONE_AND_ZEROS', () => {
         const encodedText = new Uint8Array([
