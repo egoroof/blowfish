@@ -6,10 +6,8 @@
   "types": "./egoroof-blowfish.d.ts",
   "scripts": {
     "lint": "eslint src test tools",
-    "build": "npm run build:concat && npm run build:transpile && npm run build:wrap && npm run build:compress && node tools/distSize",
-    "build:concat": "rollup -f es -i src/Blowfish.js -o dist/blowfish.js",
-    "build:transpile": "babel dist/blowfish.js -o dist/blowfish.js",
-    "build:wrap": "rollup -f umd -n Blowfish -i dist/blowfish.js -o dist/blowfish.js",
+    "build": "npm run build:wrap && npm run build:compress && node tools/distSize",
+    "build:wrap": "rollup -f umd -n Blowfish -i src/Blowfish.js -o dist/blowfish.js",
     "build:compress": "uglifyjs dist/blowfish.js -o dist/blowfish.js -m -c",
     "test": "npm run prettier:check && npm run lint && npm run build && npm run mocha",
     "mocha": "mocha",
@@ -45,9 +43,6 @@
   },
   "homepage": "https://github.com/egoroof/blowfish#readme",
   "devDependencies": {
-    "@babel/cli": "^7.21.0",
-    "@babel/core": "^7.21.3",
-    "@babel/preset-env": "^7.20.2",
     "eslint": "^8.37.0",
     "mocha": "^10.2.0",
     "prettier": "^2.8.7",
