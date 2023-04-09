@@ -5,7 +5,7 @@
 [npm-badge]: https://img.shields.io/npm/v/egoroof-blowfish.svg?style=flat-square
 [npm]: https://www.npmjs.com/package/egoroof-blowfish
 
-[Blowfish](https://en.wikipedia.org/wiki/Blowfish_(cipher)) encryption library for browsers and Node.js.
+[Blowfish](<https://en.wikipedia.org/wiki/Blowfish_(cipher)>) encryption library for browsers and Node.js.
 
 ## Table of Contents
 
@@ -47,8 +47,8 @@ You can play with this example in runkit: https://runkit.com/egoroof/blowfish-ex
 https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation
 
 ```js
-Blowfish.MODE.ECB // (default) Electronic Codebook
-Blowfish.MODE.CBC // Cipher Block Chaining
+Blowfish.MODE.ECB; // (default) Electronic Codebook
+Blowfish.MODE.CBC; // Cipher Block Chaining
 ```
 
 ### Padding
@@ -56,11 +56,11 @@ Blowfish.MODE.CBC // Cipher Block Chaining
 http://www.di-mgt.com.au/cryptopad.html
 
 ```js
-Blowfish.PADDING.PKCS5 // (default) Pad with bytes all of the same value as the number of padding bytes
-Blowfish.PADDING.ONE_AND_ZEROS // Pad with 0x80 followed by zero bytes
-Blowfish.PADDING.LAST_BYTE // Pad with zeroes except make the last byte equal to the number of padding bytes
-Blowfish.PADDING.NULL // Pad with zero (null) characters
-Blowfish.PADDING.SPACES // Pad with spaces
+Blowfish.PADDING.PKCS5; // (default) Pad with bytes all of the same value as the number of padding bytes
+Blowfish.PADDING.ONE_AND_ZEROS; // Pad with 0x80 followed by zero bytes
+Blowfish.PADDING.LAST_BYTE; // Pad with zeroes except make the last byte equal to the number of padding bytes
+Blowfish.PADDING.NULL; // Pad with zero (null) characters
+Blowfish.PADDING.SPACES; // Pad with spaces
 ```
 
 ### Return type
@@ -68,6 +68,6 @@ Blowfish.PADDING.SPACES // Pad with spaces
 Which type of data should return method `decode`:
 
 ```js
-Blowfish.TYPE.STRING // (default) String
-Blowfish.TYPE.UINT8_ARRAY // Uint8Array
+Blowfish.TYPE.STRING; // (default) String
+Blowfish.TYPE.UINT8_ARRAY; // Uint8Array
 ```
