@@ -11,11 +11,13 @@
     "build:transpile": "babel dist/blowfish.js -o dist/blowfish.js",
     "build:wrap": "rollup -f umd -n Blowfish -i dist/blowfish.js -o dist/blowfish.js",
     "build:compress": "uglifyjs dist/blowfish.js -o dist/blowfish.js -m -c",
-    "test": "npm run lint && npm run build && npm run mocha",
+    "test": "npm run prettier:check && npm run lint && npm run build && npm run mocha",
     "mocha": "mocha",
     "preversion": "npm test",
     "version": "git add package.json package-lock.json",
-    "postversion": "git push && git push --tags && npm publish"
+    "postversion": "git push && git push --tags && npm publish",
+    "prettier:write": "prettier --write .",
+    "prettier:check": "prettier --check ."
   },
   "repository": {
     "type": "git",
@@ -43,11 +45,12 @@
   },
   "homepage": "https://github.com/egoroof/blowfish#readme",
   "devDependencies": {
-    "@babel/core": "^7.21.3",
     "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.3",
     "@babel/preset-env": "^7.20.2",
     "eslint": "^8.37.0",
     "mocha": "^10.2.0",
+    "prettier": "^2.8.7",
     "rollup": "^3.20.2",
     "uglify-js": "^3.17.4"
   }
