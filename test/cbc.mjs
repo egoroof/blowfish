@@ -1,5 +1,5 @@
-const assert = require('assert');
-const Blowfish = require('../dist/blowfish');
+import { deepStrictEqual } from 'assert';
+import Blowfish from '../dist/blowfish.js';
 
 const defaultText = 'Encoded string';
 const defaultIv = 'abcdefhi';
@@ -19,8 +19,8 @@ describe('cbc', () => {
     bf.setIv('daODiTha');
     const encoded = bf.encode(textToEncode);
     const decoded = bf.decode(encoded);
-    assert.deepStrictEqual(encoded, encodedText);
-    assert.deepStrictEqual(decoded, textToEncode);
+    deepStrictEqual(encoded, encodedText);
+    deepStrictEqual(decoded, textToEncode);
   });
 
   it('PKCS5 string length == 7', () => {
@@ -34,8 +34,8 @@ describe('cbc', () => {
     bf.setIv('daODiTha');
     const encoded = bf.encode(textToEncode);
     const decoded = bf.decode(encoded);
-    assert.deepStrictEqual(encoded, encodedText);
-    assert.deepStrictEqual(decoded, textToEncode);
+    deepStrictEqual(encoded, encodedText);
+    deepStrictEqual(decoded, textToEncode);
   });
   it('PKCS5 string length == 8', () => {
     const textToEncode = 'totototo';
@@ -50,8 +50,8 @@ describe('cbc', () => {
     bf.setIv('daODiTha');
     const encoded = bf.encode(textToEncode);
     const decoded = bf.decode(encoded);
-    assert.deepStrictEqual(encoded, encodedText);
-    assert.deepStrictEqual(decoded, textToEncode);
+    deepStrictEqual(encoded, encodedText);
+    deepStrictEqual(decoded, textToEncode);
   });
 
   it('PKCS5', () => {
@@ -63,8 +63,8 @@ describe('cbc', () => {
     const encoded = bf.encode(defaultText);
     const decoded = bf.decode(encoded);
 
-    assert.deepStrictEqual(encoded, encodedText);
-    assert.deepStrictEqual(decoded, defaultText);
+    deepStrictEqual(encoded, encodedText);
+    deepStrictEqual(decoded, defaultText);
   });
 
   it('PKCS5 empty string', () => {
@@ -78,8 +78,8 @@ describe('cbc', () => {
     const encoded = bf.encode('');
     const decoded = bf.decode(encodedText, Blowfish.TYPE.UINT8_ARRAY);
 
-    assert.deepStrictEqual(encoded, encodedText);
-    assert.deepStrictEqual(decoded, new Uint8Array(0));
+    deepStrictEqual(encoded, encodedText);
+    deepStrictEqual(decoded, new Uint8Array(0));
   });
   it('ONE_AND_ZEROS', () => {
     const encodedText = new Uint8Array([
@@ -95,8 +95,8 @@ describe('cbc', () => {
     const encoded = bf.encode(defaultText);
     const decoded = bf.decode(encoded);
 
-    assert.deepStrictEqual(encoded, encodedText);
-    assert.deepStrictEqual(decoded, defaultText);
+    deepStrictEqual(encoded, encodedText);
+    deepStrictEqual(decoded, defaultText);
   });
   it('LAST_BYTE', () => {
     const encodedText = new Uint8Array([
@@ -107,8 +107,8 @@ describe('cbc', () => {
     const encoded = bf.encode(defaultText);
     const decoded = bf.decode(encoded);
 
-    assert.deepStrictEqual(encoded, encodedText);
-    assert.deepStrictEqual(decoded, defaultText);
+    deepStrictEqual(encoded, encodedText);
+    deepStrictEqual(decoded, defaultText);
   });
   it('NULL', () => {
     const encodedText = new Uint8Array([
@@ -119,8 +119,8 @@ describe('cbc', () => {
     const encoded = bf.encode(defaultText);
     const decoded = bf.decode(encoded);
 
-    assert.deepStrictEqual(encoded, encodedText);
-    assert.deepStrictEqual(decoded, defaultText);
+    deepStrictEqual(encoded, encodedText);
+    deepStrictEqual(decoded, defaultText);
   });
   it('SPACES', () => {
     const encodedText = new Uint8Array([
@@ -132,7 +132,7 @@ describe('cbc', () => {
     const encoded = bf.encode(defaultText);
     const decoded = bf.decode(encoded);
 
-    assert.deepStrictEqual(encoded, encodedText);
-    assert.deepStrictEqual(decoded, defaultText);
+    deepStrictEqual(encoded, encodedText);
+    deepStrictEqual(decoded, defaultText);
   });
 });

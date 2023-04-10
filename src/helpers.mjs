@@ -1,5 +1,5 @@
-import { PADDING } from './constants';
-import { stringToU8 } from './encoding';
+import { PADDING } from './constants.mjs';
+import { stringToU8 } from './encoding.mjs';
 
 export function signedToUnsigned(signed) {
   return signed >>> 0;

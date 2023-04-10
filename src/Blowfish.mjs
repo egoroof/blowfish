@@ -1,4 +1,4 @@
-import { MODE, PADDING, TYPE, P, S0, S1, S2, S3 } from './constants';
+import { MODE, PADDING, TYPE, P, S0, S1, S2, S3 } from './constants.mjs';
 import {
   isStringOrBuffer,
   includes,
@@ -10,8 +10,8 @@ import {
   pad,
   unpad,
   sumMod32,
-} from './helpers';
-import { u8ToString } from './encoding';
+} from './helpers.mjs';
+import { u8ToString } from './encoding.mjs';
 
 export default class Blowfish {
   static get MODE() {
