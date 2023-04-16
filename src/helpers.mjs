@@ -1,5 +1,4 @@
 import { PADDING } from './constants.mjs';
-import { stringToU8 } from './encoding.mjs';
 
 export function signedToUnsigned(signed) {
   return signed >>> 0;
@@ -50,7 +49,7 @@ export function includes(obj, val) {
 
 export function toUint8Array(val) {
   if (isString(val)) {
-    return stringToU8(val);
+    return new TextEncoder().encode(val);
   } else if (isBuffer(val)) {
     return new Uint8Array(val);
   }
