@@ -1,4 +1,4 @@
-import { deepStrictEqual } from 'assert';
+import { deepStrictEqual, throws } from 'assert';
 import Blowfish from '../dist/blowfish.js';
 
 describe('default parameters', () => {
@@ -9,5 +9,10 @@ describe('default parameters', () => {
   it('set PKCS5 padding', () => {
     const bf = new Blowfish('a');
     deepStrictEqual(bf.padding, Blowfish.PADDING.PKCS5);
+  });
+  it('empty key throws error', () => {
+    throws(() => {
+      new Blowfish('');
+    });
   });
 });
