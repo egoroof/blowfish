@@ -29,6 +29,9 @@ export default class Blowfish {
     if (!isStringOrBuffer(key)) {
       throw new Error('Key should be a string or an ArrayBuffer / Buffer');
     }
+    if (key.length < 1 || key.byteLength < 1) {
+      throw new Error('Key should not be empty');
+    }
     if (!includes(MODE, mode)) {
       throw new Error('Unsupported mode');
     }
