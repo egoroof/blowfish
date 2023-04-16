@@ -40,8 +40,6 @@ const encoded = bf.encode('input text even with emoji 🎅');
 const decoded = bf.decode(encoded, Blowfish.TYPE.STRING); // type is optional
 ```
 
-You can play with this example in runkit: https://runkit.com/egoroof/blowfish-example
-
 ### Block cipher mode of operation
 
 https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation
