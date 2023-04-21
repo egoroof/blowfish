@@ -1,3 +1,4 @@
+import { describe, it } from 'node:test';
 import { deepStrictEqual } from 'assert';
 import Blowfish from '../dist/blowfish.js';
 
