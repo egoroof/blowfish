@@ -7,6 +7,8 @@
 
 [Blowfish](<https://en.wikipedia.org/wiki/Blowfish_(cipher)>) encryption library for browsers and Node.js.
 
+Find the changelog in [CHANGELOG.md](https://github.com/egoroof/blowfish/blob/master/CHANGELOG.md)
+
 ## Table of Contents
 
 - [Installation](#installation)
