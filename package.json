@@ -2,13 +2,13 @@
   "name": "egoroof-blowfish",
   "version": "3.0.0",
   "description": "Blowfish encryption library for browsers and Node.js",
-  "main": "dist/blowfish.js",
+  "main": "dist/blowfish.mjs",
   "types": "./egoroof-blowfish.d.ts",
   "scripts": {
     "lint": "eslint src test tools --ext js,mjs",
-    "build": "npm run build:wrap && npm run build:compress && node tools/distSize.mjs",
-    "build:wrap": "rollup -f umd -n Blowfish -i src/Blowfish.mjs -o dist/blowfish.js",
-    "build:compress": "terser dist/blowfish.js -o dist/blowfish.js -m -c",
+    "build": "npm run build:bundle && npm run build:compress && node tools/distSize.mjs",
+    "build:bundle": "rollup -i src/Blowfish.mjs -o dist/blowfish.mjs",
+    "build:compress": "terser dist/blowfish.mjs -o dist/blowfish.mjs -m -c --module",
     "test": "npm run prettier:check && npm run lint && npm run build && npm run mocha",
     "mocha": "node --test --test-reporter spec test/",
     "preversion": "npm test",
@@ -34,14 +34,10 @@
   "files": [
     "LICENSE.md",
     "README.md",
-    "dist/blowfish.js",
+    "dist/blowfish.mjs",
     "egoroof-blowfish.d.ts"
   ],
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/egoroof/blowfish/issues"
-  },
-  "homepage": "https://github.com/egoroof/blowfish#readme",
   "devDependencies": {
     "eslint": "^8.42.0",
     "prettier": "^2.8.8",

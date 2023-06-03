@@ -12,6 +12,7 @@ Find the changelog in [CHANGELOG.md](https://github.com/egoroof/blowfish/blob/ma
 ## Table of Contents
 
 - [Installation](#installation)
+  - [JS modules](#js-modules)
 - [Usage](#usage)
   - [Example](#example)
   - [Block cipher mode of operation](#block-cipher-mode-of-operation)
@@ -26,6 +27,25 @@ Take latest version [here](https://unpkg.com/egoroof-blowfish) or with npm:
 npm install egoroof-blowfish --save
 ```
 
+### JS modules
+
+The library is only deployed in [native JS modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules), so in browsers you have to use `script` with type `module`:
+
+```html
+<script type="module">
+  import { Blowfish } from 'https://your-host/blowfish.mjs';
+  // your code here..
+</script>
+```
+
+Or bundle the library to your code.
+
+In Nodejs it imports easily:
+
+```js
+import { Blowfish } from 'egoroof-blowfish';
+```
+
 ## Usage
 
 All input data including key, IV, plaintext and ciphertext should be a `String` or `ArrayBuffer` / `Buffer`.
@@ -34,7 +54,8 @@ Strings support all unicode including emoji ✨.
 ### Example
 
 ```js
-const Blowfish = require('egoroof-blowfish');
+import { Blowfish } from 'egoroof-blowfish';
+
 const bf = new Blowfish('super key', Blowfish.MODE.ECB, Blowfish.PADDING.NULL); // only key isn't optional
 bf.setIv('abcdefgh'); // optional for ECB mode; bytes length should be equal 8
 

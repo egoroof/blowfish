@@ -12,7 +12,7 @@ import {
   sumMod32,
 } from './helpers.mjs';
 
-export default class Blowfish {
+export class Blowfish {
   static get MODE() {
     return MODE;
   }

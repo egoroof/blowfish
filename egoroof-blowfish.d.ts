@@ -16,7 +16,7 @@ export enum TYPE {
   UINT8_ARRAY = 1,
 }
 
-export default class Blowfish {
+export class Blowfish {
   static readonly MODE: typeof MODE;
   static readonly PADDING: typeof PADDING;
   static readonly TYPE: typeof TYPE;

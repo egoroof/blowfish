@@ -3,7 +3,7 @@ import { gzipSync } from 'zlib';
 
 const bytesToKiB = (bytes) => (bytes / 1024).toFixed(2);
 
-const filePath = 'dist/blowfish.js';
+const filePath = 'dist/blowfish.mjs';
 const distFile = readFileSync(filePath);
 const size = bytesToKiB(distFile.byteLength);
 const gzipSize = bytesToKiB(gzipSync(distFile).byteLength);

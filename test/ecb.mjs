@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import { deepStrictEqual } from 'assert';
-import Blowfish from '../dist/blowfish.js';
+import { Blowfish } from '../dist/blowfish.mjs';
 
 const defaultText = 'Encoded string';
 
