@@ -1,5 +1,38 @@
 # Changelog
 
+## v4.0.0
+
+- **Breaking**: Now this library exports only as JS native module (not UMD) and use named export (not default export)
+
+Migration on Nodejs:
+
+```js
+// v3 common js
+const Blowfish = require('egoroof-blowfish');
+
+// v3 esm interop
+import Blowfish from 'egoroof-blowfish';
+
+// v4
+import { Blowfish } from 'egoroof-blowfish';
+```
+
+Migration on browsers:
+
+```html
+<!-- v3 -->
+<script src="blowfish.js"></script>
+<script>
+  // your code using Blowfish
+</script>
+
+<!-- v4 -->
+<script type="module">
+  import { Blowfish } from 'blowfish.mjs';
+  // your code
+</script>
+```
+
 ## v3.0.0
 
 - **Breaking**: Drop Babel & encoding lib, so now this library requires ES6 native support (IE isn't supported anymore)
