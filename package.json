@@ -43,9 +43,9 @@
   },
   "homepage": "https://github.com/egoroof/blowfish#readme",
   "devDependencies": {
-    "eslint": "^8.37.0",
-    "prettier": "^2.8.7",
-    "rollup": "^3.20.2",
-    "terser": "^5.16.8"
+    "eslint": "^8.42.0",
+    "prettier": "^2.8.8",
+    "rollup": "^3.23.0",
+    "terser": "^5.17.7"
   }
 }
