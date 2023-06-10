@@ -1,5 +1,9 @@
 # Changelog
 
+## v4.0.1
+
+- Reduce library size `15.62 KiB` -> `13.01 KiB` by compressing PI numbers
+
 ## v4.0.0
 
 - **Breaking**: Now this library exports only as JS native module (not UMD) and use named export (not default export)
