@@ -1,4 +1,4 @@
-import { MODE, PADDING, TYPE, P, S0, S1, S2, S3 } from './constants.mjs';
+import { MODE, PADDING, TYPE } from './constants.mjs';
 import {
   isStringOrBuffer,
   includes,
@@ -11,6 +11,7 @@ import {
   unpad,
   sumMod32,
 } from './helpers.mjs';
+import { initBoxes } from './pi.mjs';
 
 export class Blowfish {
   static get MODE() {
@@ -42,8 +43,9 @@ export class Blowfish {
     this.mode = mode;
     this.padding = padding;
     this.iv = null;
-    this.p = P.slice();
-    this.s = [S0.slice(), S1.slice(), S2.slice(), S3.slice()];
+    const boxes = initBoxes();
+    this.p = boxes.p;
+    this.s = boxes.s;
 
     key = expandKey(toUint8Array(key));
     for (let i = 0, j = 0; i < 18; i++, j += 4) {
