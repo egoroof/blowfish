@@ -7,6 +7,7 @@
 3. Generate d.ts automaticly on build
 4. Compare dist and sure there is not any breaking changes
 5. Integration eslint with TS should works
+6. Drop tslib dependency?
 
 ## not blockers
 
