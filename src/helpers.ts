@@ -1,4 +1,4 @@
-import { PADDING } from './constants.mjs';
+import { PADDING } from './constants';
 
 export function signedToUnsigned(signed) {
   return signed >>> 0;

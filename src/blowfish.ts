@@ -1,4 +1,4 @@
-import { MODE, PADDING, TYPE } from './constants.mjs';
+import { MODE, PADDING, TYPE } from './constants';
 import {
   isStringOrBuffer,
   includes,
@@ -10,10 +10,16 @@ import {
   pad,
   unpad,
   sumMod32,
-} from './helpers.mjs';
-import { initBoxes } from './pi.mjs';
+} from './helpers';
+import { initBoxes } from './pi';
 
 export class Blowfish {
+  private mode: number;
+  private padding: number;
+  private iv: any;
+  private p: number[];
+  private s: number[][];
+
   static get MODE() {
     return MODE;
   }
