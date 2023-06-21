@@ -16,7 +16,7 @@ import { initBoxes } from './pi';
 export class Blowfish {
   private mode: number;
   private padding: number;
-  private iv: any;
+  private iv?: Uint8Array;
   private p: number[];
   private s: number[][];
 
@@ -48,7 +48,6 @@ export class Blowfish {
 
     this.mode = mode;
     this.padding = padding;
-    this.iv = null;
     const boxes = initBoxes();
     this.p = boxes.p;
     this.s = boxes.s;

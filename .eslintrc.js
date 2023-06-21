@@ -1,14 +1,15 @@
 module.exports = {
+  parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
+    warnOnUnsupportedTypeScriptVersion: false,
   },
+  plugins: ['@typescript-eslint'],
   env: {
     es6: true,
     browser: true,
     node: true,
   },
-  extends: 'eslint:recommended',
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
   rules: {
     'no-var': 2, // require let or const instead of var
     'prefer-arrow-callback': 2, // suggest using arrow functions as callbacks
