@@ -7,7 +7,7 @@
   "scripts": {
     "lint": "eslint src test tools --ext js,mjs,ts",
     "build": "npm run build:bundle && npm run build:compress && node tools/distSize.mjs",
-    "build:bundle": "rollup -i src/blowfish.ts -o dist/blowfish.mjs -p @rollup/plugin-typescript",
+    "build:bundle": "rollup -c",
     "build:compress": "terser dist/blowfish.mjs -o dist/blowfish.mjs -m -c --module",
     "test": "npm run prettier:check && npm run lint && npm run build && npm run mocha",
     "mocha": "node --test --test-reporter spec test/",
@@ -45,7 +45,7 @@
     "@typescript-eslint/parser": "^5.60.0",
     "eslint": "^8.42.0",
     "prettier": "^2.8.8",
-    "rollup": "^3.23.0",
+    "rollup": "^3.25.2",
     "terser": "^5.17.7",
     "tslib": "^2.5.3",
     "typescript": "^5.1.3"

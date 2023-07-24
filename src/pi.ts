@@ -118,7 +118,10 @@ const piHex =
   'a65cdea03f09252dc208e69fb74e6132ce77e25b578fdfe33ac372e6';
 
 export function initBoxes() {
-  const boxes = {
+  const boxes: {
+    p: number[];
+    s: number[][];
+  } = {
     p: [],
     s: [[], [], [], []],
   };
