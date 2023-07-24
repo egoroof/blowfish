@@ -15,7 +15,7 @@ describe('cbc', () => {
     const bf = new Blowfish(
       'a4MJrL7XahTiDOad',
       Blowfish.MODE.CBC,
-      Blowfish.PADDING.PKCS5
+      Blowfish.PADDING.PKCS5,
     );
     bf.setIv('daODiTha');
     const encoded = bf.encode(textToEncode);
@@ -30,7 +30,7 @@ describe('cbc', () => {
     const bf = new Blowfish(
       'a4MJrL7XahTiDOad',
       Blowfish.MODE.CBC,
-      Blowfish.PADDING.PKCS5
+      Blowfish.PADDING.PKCS5,
     );
     bf.setIv('daODiTha');
     const encoded = bf.encode(textToEncode);
@@ -46,7 +46,7 @@ describe('cbc', () => {
     const bf = new Blowfish(
       'a4MJrL7XahTiDOad',
       Blowfish.MODE.CBC,
-      Blowfish.PADDING.PKCS5
+      Blowfish.PADDING.PKCS5,
     );
     bf.setIv('daODiTha');
     const encoded = bf.encode(textToEncode);
@@ -90,7 +90,7 @@ describe('cbc', () => {
     const bf = new Blowfish(
       'a',
       Blowfish.MODE.CBC,
-      Blowfish.PADDING.ONE_AND_ZEROS
+      Blowfish.PADDING.ONE_AND_ZEROS,
     );
     bf.setIv(defaultIv);
     const encoded = bf.encode(defaultText);

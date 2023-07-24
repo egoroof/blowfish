@@ -82,7 +82,7 @@ export class Blowfish {
   encode(data) {
     if (!isStringOrBuffer(data)) {
       throw new Error(
-        'Encode data should be a string or an ArrayBuffer / Buffer'
+        'Encode data should be a string or an ArrayBuffer / Buffer',
       );
     }
     if (this.mode !== MODE.ECB && !this.iv) {
@@ -101,7 +101,7 @@ export class Blowfish {
   decode(data, returnType = TYPE.STRING) {
     if (!isStringOrBuffer(data)) {
       throw new Error(
-        'Decode data should be a string or an ArrayBuffer / Buffer'
+        'Decode data should be a string or an ArrayBuffer / Buffer',
       );
     }
     if (this.mode !== MODE.ECB && !this.iv) {
@@ -182,7 +182,7 @@ export class Blowfish {
         bytes[i + 4],
         bytes[i + 5],
         bytes[i + 6],
-        bytes[i + 7]
+        bytes[i + 7],
       );
       [l, r] = this._encryptBlock(l, r);
       encoded.set(unpackFourBytes(l), i);
@@ -201,7 +201,7 @@ export class Blowfish {
         bytes[i + 4],
         bytes[i + 5],
         bytes[i + 6],
-        bytes[i + 7]
+        bytes[i + 7],
       );
       [l, r] = [xor(prevL, l), xor(prevR, r)];
       [l, r] = this._encryptBlock(l, r);
@@ -220,7 +220,7 @@ export class Blowfish {
         bytes[i + 4],
         bytes[i + 5],
         bytes[i + 6],
-        bytes[i + 7]
+        bytes[i + 7],
       );
       [l, r] = this._decryptBlock(l, r);
       decoded.set(unpackFourBytes(l), i);
@@ -241,7 +241,7 @@ export class Blowfish {
         bytes[i + 4],
         bytes[i + 5],
         bytes[i + 6],
-        bytes[i + 7]
+        bytes[i + 7],
       );
       [prevLTmp, prevRTmp] = [l, r];
       [l, r] = this._decryptBlock(l, r);

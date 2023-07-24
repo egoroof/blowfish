@@ -36,7 +36,7 @@ describe('ecb', () => {
     const bf = new Blowfish(
       'a',
       Blowfish.MODE.ECB,
-      Blowfish.PADDING.ONE_AND_ZEROS
+      Blowfish.PADDING.ONE_AND_ZEROS,
     );
     const encoded = bf.encode(defaultText);
     const decoded = bf.decode(encoded);
