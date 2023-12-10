@@ -10,7 +10,7 @@
     "build:bundle": "rollup -i src/Blowfish.mjs -o dist/blowfish.mjs",
     "build:compress": "terser dist/blowfish.mjs -o dist/blowfish.mjs -m -c --module",
     "test": "npm run prettier:check && npm run lint && npm run build && npm run mocha",
-    "mocha": "node --test --test-reporter spec test/",
+    "mocha": "node --test --test-reporter spec",
     "preversion": "npm test",
     "version": "git add package.json package-lock.json",
     "postversion": "git push && git push --tags && npm publish",
