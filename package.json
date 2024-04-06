@@ -5,7 +5,7 @@
   "main": "dist/blowfish.mjs",
   "types": "./egoroof-blowfish.d.ts",
   "scripts": {
-    "lint": "eslint src test tools --ext js,mjs",
+    "lint": "eslint src test tools",
     "build": "npm run build:bundle && npm run build:compress && node tools/distSize.mjs",
     "build:bundle": "rollup -i src/Blowfish.mjs -o dist/blowfish.mjs",
     "build:compress": "terser dist/blowfish.mjs -o dist/blowfish.mjs -m -c --module",
@@ -39,9 +39,10 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^8.55.0",
-    "prettier": "^3.1.1",
-    "rollup": "^4.7.0",
-    "terser": "^5.26.0"
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0",
+    "prettier": "^3.2.5",
+    "rollup": "^4.14.0",
+    "terser": "^5.30.3"
   }
 }
