@@ -1,6 +1,6 @@
 {
   "name": "egoroof-blowfish",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Blowfish encryption library for browsers and Node.js",
   "main": "dist/blowfish.mjs",
   "types": "./egoroof-blowfish.d.ts",
