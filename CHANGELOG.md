@@ -1,5 +1,9 @@
 # Changelog
 
+## v4.0.2
+
+- Add publish workflow
+
 ## v4.0.1
 
 - Reduce library size `15.62 KiB` -> `13.01 KiB` by compressing PI numbers
