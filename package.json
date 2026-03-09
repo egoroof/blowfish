@@ -2,46 +2,45 @@
   "name": "egoroof-blowfish",
   "version": "4.0.2",
   "description": "Blowfish encryption library for browsers and Node.js",
-  "main": "dist/blowfish.mjs",
-  "types": "./egoroof-blowfish.d.ts",
-  "scripts": {
-    "lint": "eslint src test tools",
-    "build": "npm run build:bundle && npm run build:compress && node tools/distSize.mjs",
-    "build:bundle": "rollup -i src/Blowfish.mjs -o dist/blowfish.mjs",
-    "build:compress": "terser dist/blowfish.mjs -o dist/blowfish.mjs -m -c --module",
-    "test": "npm run prettier:check && npm run lint && npm run build && npm run mocha",
-    "mocha": "node --test --test-reporter spec",
-    "preversion": "npm test",
-    "version": "git add package.json package-lock.json",
-    "postversion": "git push && git push --tags",
-    "prettier:write": "prettier --write .",
-    "prettier:check": "prettier --check ."
-  },
+  "keywords": [
+    "blowfish",
+    "cbc",
+    "cipher",
+    "decryption",
+    "ecb",
+    "encryption",
+    "library"
+  ],
+  "license": "MIT",
+  "author": "egoroof",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/egoroof/blowfish.git"
   },
-  "keywords": [
-    "blowfish",
-    "cipher",
-    "ecb",
-    "cbc",
-    "encryption",
-    "decryption",
-    "library"
-  ],
-  "author": "egoroof",
   "files": [
     "LICENSE.md",
     "README.md",
     "dist/blowfish.mjs",
     "egoroof-blowfish.d.ts"
   ],
-  "license": "MIT",
+  "main": "dist/blowfish.mjs",
+  "types": "./egoroof-blowfish.d.ts",
+  "scripts": {
+    "lint": "oxlint src test tools",
+    "build": "npm run build:bundle && npm run build:compress && node tools/distSize.mjs",
+    "build:bundle": "rollup -i src/Blowfish.mjs -o dist/blowfish.mjs",
+    "build:compress": "terser dist/blowfish.mjs -o dist/blowfish.mjs -m -c --module",
+    "test": "npm run fmt:check && npm run lint && npm run build && npm run mocha",
+    "mocha": "node --test --test-reporter spec",
+    "preversion": "npm test",
+    "version": "git add package.json package-lock.json",
+    "postversion": "git push && git push --tags",
+    "fmt:write": "oxfmt",
+    "fmt:check": "oxfmt --check"
+  },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "eslint": "^10.0.2",
-    "prettier": "^3.8.1",
+    "oxfmt": "^0.36.0",
+    "oxlint": "^1.51.0",
     "rollup": "^4.59.0",
     "terser": "^5.46.0"
   }
