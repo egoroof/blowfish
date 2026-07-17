@@ -1,10 +1,5 @@
 # Blowfish
 
-[![npm package][npm-badge]][npm]
-
-[npm-badge]: https://img.shields.io/npm/v/egoroof-blowfish.svg?style=flat-square
-[npm]: https://www.npmjs.com/package/egoroof-blowfish
-
 [Blowfish](<https://en.wikipedia.org/wiki/Blowfish_(cipher)>) encryption library for browsers and Node.js.
 
 Find the changelog in [CHANGELOG.md](https://github.com/egoroof/blowfish/blob/master/CHANGELOG.md)
@@ -21,7 +16,7 @@ Find the changelog in [CHANGELOG.md](https://github.com/egoroof/blowfish/blob/ma
 
 ## Installation
 
-Take latest version [here](https://unpkg.com/egoroof-blowfish) or with npm:
+Take latest version [here](https://unpkg.com/egoroof-blowfish) or with [npm](https://www.npmjs.com/package/egoroof-blowfish):
 
 ```
 npm install egoroof-blowfish --save
